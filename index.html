@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AUDIRA — Sound, Refined. Premium wireless headphones engineered for audiophiles.">
+<title>AUDIRA — Sound, Refined.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   AUDIRA — Design Tokens & Theming
+   ============================================================ */
+:root{
+  --font-display:'Sora',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --maxw:1280px;
+  --radius:18px;
+  --radius-sm:12px;
+  --radius-lg:28px;
+  --header-h:74px;
+}
+/* Dark theme (default / primary experience) — cinematic charcoal + bronze */
+:root,:root[data-theme="dark"]{
+  --bg:#08070a;
+  --bg-2:#0c0b0e;
+  --surface:#131116;
+  --surface-2:#1a171d;
+  --surface-3:#242028;
+  --border:rgba(255,255,255,.075);
+  --border-strong:rgba(230,185,138,.22);
+  --text:#f6f2ea;
+  --text-2:#b6afa3;
+  --text-3:#7c766b;
+  --accent:#c68a4e;
+  --accent-2:#e6b98a;
+  --accent-grad:linear-gradient(115deg,#a5672f 0%,#c68a4e 45%,#e8c39a 100%);
+  --gold:#e6b98a;
+  --danger:#e8687a;
+  --star:#e0a94f;
+  --shadow-lg:0 40px 100px -32px rgba(0,0,0,.82);
+  --shadow-md:0 22px 54px -22px rgba(0,0,0,.66);
+  --glow:0 0 90px -10px rgba(198,138,78,.42);
+  --hero-glow:radial-gradient(55% 60% at 62% 45%,rgba(198,138,78,.30),rgba(165,103,47,.12) 42%,transparent 70%);
+  --card-hi:rgba(255,255,255,.04);
+  --img-fallback:linear-gradient(135deg,#1a120b,#0d0b0e 55%,#141017);
+}
+/* Light theme — warm cream + deep bronze */
+:root[data-theme="light"]{
+  --bg:#f2ede4;
+  --bg-2:#eae4d8;
+  --surface:#fffdf9;
+  --surface-2:#f6f1e8;
+  --surface-3:#ece5d8;
+  --border:rgba(40,28,14,.10);
+  --border-strong:rgba(150,100,50,.30);
+  --text:#1c150d;
+  --text-2:#5b5245;
+  --text-3:#8d8373;
+  --accent:#a5672f;
+  --accent-2:#c0894a;
+  --accent-grad:linear-gradient(115deg,#8a5220 0%,#a5672f 45%,#c8975a 100%);
+  --gold:#a5672f;
+  --danger:#c23a4e;
+  --star:#c98a2e;
+  --shadow-lg:0 40px 84px -34px rgba(90,60,25,.32);
+  --shadow-md:0 22px 48px -24px rgba(90,60,25,.20);
+  --glow:0 0 76px -14px rgba(165,103,47,.28);
+  --hero-glow:radial-gradient(55% 60% at 62% 45%,rgba(165,103,47,.20),rgba(200,151,90,.10) 42%,transparent 70%);
+  --card-hi:rgba(40,28,14,.02);
+  --img-fallback:linear-gradient(135deg,#e8dcc8,#f2ede4 55%,#ece2d0);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition:background .5s var(--ease),color .5s var(--ease);
+}
+body.no-scroll{overflow:hidden}
+h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:600;line-height:1.1;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+ul{list-style:none}
+input,select,textarea{font-family:inherit;font-size:1rem}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.container{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+.mono-eyebrow{font-family:var(--font-display);font-size:.72rem;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--accent-2)}
+.grad-text{background:var(--accent-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.section{padding:clamp(64px,9vw,120px) 0}
+.section-head{max-width:640px;margin-bottom:clamp(36px,5vw,60px)}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-title{font-size:clamp(1.9rem,4.4vw,3rem);margin:14px 0 12px;font-weight:700}
+.section-sub{color:var(--text-2);font-size:1.05rem}
+
+/* ============ Buttons ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;
+  padding:.92em 1.7em;border-radius:100px;font-family:var(--font-display);font-weight:600;
+  font-size:.95rem;letter-spacing:.01em;transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .3s,color .3s,border-color .3s;
+  white-space:nowrap;position:relative;overflow:hidden}
+.btn svg{width:1.15em;height:1.15em}
+.btn-primary{background:var(--accent-grad);color:#fff;box-shadow:0 12px 34px -12px rgba(198,138,78,.6)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 44px -12px rgba(198,138,78,.75)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-strong)}
+.btn-ghost:hover{background:var(--surface-2);border-color:var(--accent);transform:translateY(-3px)}
+.btn-solid{background:var(--text);color:var(--bg)}
+.btn-solid:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.btn-block{width:100%}
+.btn-lg{padding:1.05em 2.1em;font-size:1.02rem}
+.btn:active{transform:translateY(-1px) scale(.99)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ============ Header ============ */
+.header{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--header-h);
+  display:flex;align-items:center;transition:background .4s var(--ease),border-color .4s,backdrop-filter .4s}
+.header.scrolled{background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(22px) saturate(150%);border-bottom:1px solid var(--border)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+.logo{display:flex;align-items:center;gap:11px;font-family:var(--font-display);font-weight:700;font-size:1.32rem;letter-spacing:.14em}
+.logo-mark{width:34px;height:34px;flex-shrink:0}
+.logo b{font-weight:800}
+.header-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--text);
+  transition:background .25s,color .25s,transform .25s;position:relative}
+.icon-btn:hover{background:var(--surface-2);color:var(--accent)}
+.icon-btn svg{width:21px;height:21px}
+.badge{position:absolute;top:4px;right:3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;
+  background:var(--accent-grad);color:#fff;font-size:.66rem;font-weight:700;display:grid;place-items:center;
+  font-family:var(--font-display);transform:scale(0);transition:transform .3s var(--ease)}
+.badge.show{transform:scale(1)}
+/* Hamburger */
+.burger{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;transition:background .25s}
+.burger:hover{background:var(--surface-2)}
+.burger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;margin:3px 0;transition:transform .4s var(--ease),opacity .3s}
+.burger.open span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+/* ============ Nav Drawer ============ */
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;
+  transition:opacity .45s var(--ease),visibility .45s;z-index:300;backdrop-filter:blur(4px)}
+.nav-overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,90vw);background:var(--bg-2);
+  border-left:1px solid var(--border);z-index:310;transform:translateX(100%);
+  transition:transform .5s var(--ease);display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}
+.drawer.open{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:22px 26px;border-bottom:1px solid var(--border)}
+.drawer-close{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;transition:background .25s,transform .25s}
+.drawer-close:hover{background:var(--surface-2);transform:rotate(90deg)}
+.drawer-close svg{width:20px;height:20px}
+.drawer-nav{flex:1;overflow-y:auto;padding:18px 0}
+.drawer-link{display:flex;align-items:center;gap:16px;padding:15px 30px;font-family:var(--font-display);
+  font-size:1.16rem;font-weight:500;color:var(--text-2);transition:color .25s,padding .3s var(--ease);position:relative}
+.drawer-link svg{width:20px;height:20px;opacity:.7;transition:transform .3s}
+.drawer-link::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) scaleY(0);
+  width:3px;height:60%;background:var(--accent-grad);border-radius:3px;transition:transform .3s var(--ease)}
+.drawer-link:hover,.drawer-link.active{color:var(--text);padding-left:38px}
+.drawer-link:hover::before,.drawer-link.active::before{transform:translateY(-50%) scaleY(1)}
+.drawer-link .mini-badge{margin-left:auto;background:var(--surface-3);color:var(--text-2);font-size:.72rem;
+  font-weight:700;padding:2px 9px;border-radius:20px;font-family:var(--font-display)}
+.drawer-foot{padding:22px 26px;border-top:1px solid var(--border)}
+.theme-row{display:flex;align-items:center;justify-content:space-between}
+.theme-row span{font-family:var(--font-display);font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:10px}
+.theme-toggle{width:60px;height:32px;border-radius:20px;background:var(--surface-3);border:1px solid var(--border);
+  position:relative;transition:background .4s}
+.theme-toggle-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;
+  background:var(--accent-grad);display:grid;place-items:center;transition:transform .45s var(--ease)}
+.theme-toggle-knob svg{width:14px;height:14px;color:#fff}
+:root[data-theme="light"] .theme-toggle-knob{transform:translateX(28px)}
+
+/* ============ Hero ============ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding-top:var(--header-h);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:var(--hero-glow);z-index:0}
+.hero-grid{position:absolute;inset:0;z-index:0;opacity:.5;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;-webkit-mask-image:radial-gradient(60% 60% at 50% 45%,#000,transparent 80%);
+  mask-image:radial-gradient(60% 60% at 50% 45%,#000,transparent 80%)}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;width:100%;max-width:var(--maxw);margin:0 auto;padding:60px clamp(20px,5vw,48px)}
+.hero-copy{max-width:560px}
+.hero h1{font-size:clamp(3rem,8.5vw,6.4rem);font-weight:800;letter-spacing:-.03em;line-height:.98;margin:22px 0}
+.hero-sub{font-size:clamp(1.05rem,2vw,1.3rem);color:var(--text-2);max-width:440px;margin-bottom:34px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+.hero-stats{display:flex;gap:34px;margin-top:48px;flex-wrap:wrap}
+.hero-stat b{display:block;font-family:var(--font-display);font-size:1.7rem;font-weight:700}
+.hero-stat span{font-size:.82rem;color:var(--text-3);letter-spacing:.04em}
+/* 3D stage */
+.hero-stage{position:relative;display:grid;place-items:center;min-height:min(560px,72vh);perspective:1400px}
+.stage-halo{position:absolute;width:118%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(198,138,78,.35),transparent 62%);filter:blur(20px);animation:pulseHalo 6s ease-in-out infinite}
+:root[data-theme="light"] .stage-halo{background:radial-gradient(circle,rgba(165,103,47,.22),transparent 62%)}
+@keyframes pulseHalo{0%,100%{transform:scale(.94);opacity:.85}50%{transform:scale(1.04);opacity:1}}
+.stage-ring{position:absolute;border-radius:50%;border:1px solid var(--border-strong)}
+.stage-ring.r1{width:82%;aspect-ratio:1;animation:spin 26s linear infinite}
+.stage-ring.r2{width:100%;aspect-ratio:1;border-style:dashed;opacity:.5;animation:spin 40s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-headphone{width:min(430px,74%);transform-style:preserve-3d;animation:float3d 7s ease-in-out infinite;
+  filter:drop-shadow(0 50px 60px rgba(0,0,0,.6))}
+.hero-headphone .spinner{transform-style:preserve-3d;animation:rotate3d 16s linear infinite}
+@keyframes float3d{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes rotate3d{0%{transform:rotateY(-18deg)}50%{transform:rotateY(18deg)}100%{transform:rotateY(-18deg)}}
+.hero-reflection{position:absolute;bottom:2%;width:60%;height:40px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.5),transparent 70%);filter:blur(12px);opacity:.6}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;display:flex;
+  flex-direction:column;align-items:center;gap:8px;color:var(--text-3);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+.scroll-hint .mouse{width:24px;height:38px;border:2px solid var(--text-3);border-radius:14px;position:relative}
+.scroll-hint .mouse::after{content:'';position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;
+  background:var(--text-3);border-radius:2px;animation:scrollDot 1.7s ease-in-out infinite}
+@keyframes scrollDot{0%{opacity:0;top:7px}40%{opacity:1}80%{opacity:0;top:18px}100%{opacity:0}}
+
+/* ============ Marquee ============ */
+.marquee{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;background:var(--bg-2);padding:20px 0}
+.marquee-track{display:flex;gap:56px;width:max-content;animation:marquee 26s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee-item{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-weight:600;
+  font-size:1.05rem;color:var(--text-3);white-space:nowrap;letter-spacing:.02em}
+.marquee-item svg{width:18px;height:18px;color:var(--accent-2)}
+
+/* ============ Product Cards ============ */
+.grid-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:26px}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .4s;position:relative;display:flex;flex-direction:column}
+.pcard:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
+.pcard-media{position:relative;aspect-ratio:1/.92;background:radial-gradient(120% 100% at 50% 20%,var(--surface-3),var(--surface));
+  display:grid;place-items:center;overflow:hidden;padding:22px}
+.pcard-media .hp-svg{width:78%;transition:transform .7s var(--ease);filter:drop-shadow(0 24px 30px rgba(0,0,0,.4))}
+.pcard:hover .pcard-media .hp-svg{transform:scale(1.08) rotate(-4deg)}
+.pcard-tag{position:absolute;top:14px;left:14px;background:var(--accent-grad);color:#fff;font-family:var(--font-display);
+  font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:20px;z-index:2}
+.pcard-fav{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;
+  background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(8px);border:1px solid var(--border);
+  display:grid;place-items:center;z-index:2;transition:transform .25s,background .25s,color .25s}
+.pcard-fav:hover{transform:scale(1.12)}
+.pcard-fav svg{width:19px;height:19px;transition:transform .25s;fill:none;stroke:currentColor}
+.pcard-fav.active{color:var(--danger)}
+.pcard-fav.active svg{fill:var(--danger);stroke:var(--danger)}
+.pcard-quick{position:absolute;left:16px;right:16px;bottom:16px;display:flex;gap:8px;z-index:2;
+  opacity:0;transform:translateY(14px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.pcard:hover .pcard-quick{opacity:1;transform:translateY(0)}
+.pcard-quick .btn{flex:1;padding:.7em 1em;font-size:.82rem;
+  background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(10px);border:1px solid var(--border-strong);color:var(--text)}
+.pcard-quick .btn:hover{background:var(--accent-grad);border-color:transparent;color:#fff}
+.pcard-body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:9px;flex:1}
+.pcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.pcard-name{font-family:var(--font-display);font-size:1.14rem;font-weight:600}
+.pcard-color{display:flex;align-items:center;gap:7px;font-size:.8rem;color:var(--text-3);margin-top:2px}
+.color-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--border-strong);flex-shrink:0}
+.pcard-cat{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-2);
+  background:color-mix(in srgb,var(--accent-2) 12%,transparent);padding:4px 9px;border-radius:8px;white-space:nowrap}
+.pcard-desc{font-size:.88rem;color:var(--text-2);line-height:1.5;flex:1}
+.stars{display:inline-flex;gap:2px;align-items:center}
+.stars svg{width:15px;height:15px;fill:var(--star)}
+.stars .empty{fill:var(--surface-3)}
+.rating-row{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text-3)}
+.pcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;gap:12px}
+.price{font-family:var(--font-display);font-size:1.4rem;font-weight:700}
+.price small{font-size:.85rem;color:var(--text-3);font-weight:400;text-decoration:line-through;margin-left:6px}
+.pcard-add{width:46px;height:46px;border-radius:13px;background:var(--accent-grad);color:#fff;display:grid;place-items:center;
+  transition:transform .3s var(--ease),box-shadow .3s;box-shadow:0 10px 24px -10px rgba(198,138,78,.6);flex-shrink:0}
+.pcard-add:hover{transform:translateY(-3px) scale(1.05)}
+.pcard-add svg{width:20px;height:20px}
+
+/* ============ Views ============ */
+.view{display:none;animation:viewIn .55s var(--ease)}
+.view.active{display:block}
+@keyframes viewIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.page-hero{padding:calc(var(--header-h) + 60px) 0 20px;text-align:center}
+.page-hero h1{font-size:clamp(2.2rem,6vw,3.8rem);font-weight:800}
+.page-hero p{color:var(--text-2);max-width:560px;margin:16px auto 0;font-size:1.05rem}
+.breadcrumb{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:18px;font-size:.85rem;color:var(--text-3)}
+.breadcrumb a:hover{color:var(--accent)}
+
+/* ============ Shop ============ */
+.shop-layout{display:grid;grid-template-columns:270px 1fr;gap:34px;align-items:start}
+.filters{position:sticky;top:calc(var(--header-h) + 20px);background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px}
+.filter-group{padding:16px 0;border-bottom:1px solid var(--border)}
+.filter-group:last-child{border-bottom:none;padding-bottom:0}
+.filter-group:first-child{padding-top:0}
+.filter-title{font-family:var(--font-display);font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:14px}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 14px;border-radius:100px;background:var(--surface-2);border:1px solid var(--border);
+  font-size:.82rem;font-weight:500;color:var(--text-2);transition:all .25s;font-family:var(--font-body)}
+.chip:hover{border-color:var(--accent);color:var(--text)}
+.chip.active{background:var(--accent-grad);color:#fff;border-color:transparent}
+.color-swatches{display:flex;flex-wrap:wrap;gap:10px}
+.swatch{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:transform .25s,border-color .25s;position:relative}
+.swatch:hover{transform:scale(1.12)}
+.swatch.active{border-color:var(--accent);transform:scale(1.12)}
+.swatch.active::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:.8rem;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.price-slider{width:100%;margin-top:6px;accent-color:var(--accent)}
+.price-vals{display:flex;justify-content:space-between;font-size:.82rem;color:var(--text-2);margin-top:8px}
+.shop-toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:24px}
+.search-box{position:relative;flex:1;min-width:200px;max-width:340px}
+.search-box svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-3)}
+.search-box input{width:100%;padding:12px 16px 12px 44px;border-radius:100px;background:var(--surface);
+  border:1px solid var(--border);color:var(--text);transition:border-color .25s}
+.search-box input:focus{outline:none;border-color:var(--accent)}
+.select-wrap{position:relative}
+.select-wrap select{appearance:none;padding:12px 40px 12px 18px;border-radius:100px;background:var(--surface);
+  border:1px solid var(--border);color:var(--text);cursor:pointer;font-weight:500}
+.select-wrap::after{content:'';position:absolute;right:16px;top:50%;transform:translateY(-60%) rotate(45deg);
+  width:7px;height:7px;border-right:2px solid var(--text-3);border-bottom:2px solid var(--text-3);pointer-events:none}
+.result-count{font-size:.88rem;color:var(--text-3)}
+.filter-toggle-mobile{display:none}
+.no-results{text-align:center;padding:70px 20px;color:var(--text-3)}
+.no-results svg{width:56px;height:56px;margin-bottom:16px;opacity:.4}
+
+/* ============ Product Detail ============ */
+.pdp{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,64px);align-items:start;padding-top:30px}
+.pdp-gallery{position:sticky;top:calc(var(--header-h) + 24px)}
+.pdp-stage{background:radial-gradient(120% 100% at 50% 25%,var(--surface-3),var(--surface));border:1px solid var(--border);
+  border-radius:var(--radius-lg);aspect-ratio:1/.94;display:grid;place-items:center;padding:40px;position:relative;overflow:hidden}
+.pdp-stage .hp-svg{width:74%;filter:drop-shadow(0 40px 44px rgba(0,0,0,.5));transition:transform .6s var(--ease),opacity .3s}
+.pdp-stage.swapping .hp-svg{opacity:0;transform:scale(.9)}
+.pdp-thumbs{display:flex;gap:12px;margin-top:16px}
+.pdp-thumb{width:78px;height:78px;border-radius:14px;background:var(--surface-2);border:1.5px solid var(--border);
+  display:grid;place-items:center;padding:8px;cursor:pointer;transition:border-color .25s,transform .25s}
+.pdp-thumb:hover{transform:translateY(-2px)}
+.pdp-thumb.active{border-color:var(--accent)}
+.pdp-thumb .hp-svg{width:100%}
+.pdp-info h1{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700;margin:10px 0 8px}
+.pdp-cat{color:var(--accent-2)}
+.pdp-price{font-family:var(--font-display);font-size:2rem;font-weight:700;margin:18px 0}
+.pdp-desc{color:var(--text-2);margin-bottom:26px;font-size:1.02rem}
+.pdp-block{margin:24px 0}
+.pdp-label{font-family:var(--font-display);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.pdp-label .picked{color:var(--text);text-transform:none;letter-spacing:0;font-weight:500}
+.color-picker{display:flex;gap:12px;flex-wrap:wrap}
+.color-opt{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
+.color-opt .dot{width:42px;height:42px;border-radius:50%;border:2px solid var(--border);transition:transform .25s,border-color .25s;position:relative}
+.color-opt:hover .dot{transform:scale(1.08)}
+.color-opt.active .dot{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 20%,transparent)}
+.color-opt span{font-size:.72rem;color:var(--text-3)}
+.color-opt.active span{color:var(--text)}
+.qty-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.qty-stepper{display:flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:100px;overflow:hidden}
+.qty-stepper button{width:44px;height:44px;font-size:1.3rem;color:var(--text-2);transition:background .2s,color .2s}
+.qty-stepper button:hover{background:var(--surface-3);color:var(--accent)}
+.qty-stepper span{min-width:44px;text-align:center;font-family:var(--font-display);font-weight:600}
+.pdp-actions{display:flex;gap:14px;margin:28px 0;flex-wrap:wrap}
+.pdp-actions .btn{flex:1;min-width:150px}
+.pdp-perks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:24px}
+.pdp-perk{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.pdp-perk svg{width:22px;height:22px;color:var(--accent-2);flex-shrink:0;margin-top:2px}
+.pdp-perk b{font-family:var(--font-display);font-size:.9rem;display:block}
+.pdp-perk span{font-size:.78rem;color:var(--text-3)}
+/* Tabs */
+.pdp-tabs{margin-top:clamp(50px,7vw,90px)}
+.tab-nav{display:flex;gap:6px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:15px 22px;font-family:var(--font-display);font-weight:600;color:var(--text-3);white-space:nowrap;
+  position:relative;transition:color .25s}
+.tab-btn::after{content:'';position:absolute;left:16px;right:16px;bottom:-1px;height:2px;background:var(--accent-grad);
+  transform:scaleX(0);transition:transform .3s var(--ease)}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--text)}
+.tab-btn.active::after{transform:scaleX(1)}
+.tab-panel{display:none;padding:32px 0;animation:viewIn .4s var(--ease)}
+.tab-panel.active{display:block}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0 40px}
+.spec-item{display:flex;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid var(--border)}
+.spec-item dt{color:var(--text-3)}
+.spec-item dd{font-weight:600;text-align:right;font-family:var(--font-display)}
+.box-list,.feat-list{display:grid;gap:14px;max-width:640px}
+.box-list li,.feat-list li{display:flex;gap:14px;align-items:flex-start;color:var(--text-2)}
+.box-list li svg,.feat-list li svg{width:22px;height:22px;color:var(--accent-2);flex-shrink:0;margin-top:1px}
+.feat-list li b{color:var(--text);font-family:var(--font-display)}
+
+/* ============ Reviews ============ */
+.reviews-summary{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(26px,4vw,44px);margin-bottom:44px}
+.rating-big{text-align:center}
+.rating-big .num{font-family:var(--font-display);font-size:4rem;font-weight:800;line-height:1}
+.rating-big .stars{margin:10px 0 6px}
+.rating-big small{color:var(--text-3)}
+.rating-bars{display:flex;flex-direction:column;gap:10px}
+.rating-bar{display:flex;align-items:center;gap:12px;font-size:.85rem}
+.rating-bar .lab{width:44px;color:var(--text-3);display:flex;align-items:center;gap:4px}
+.rating-bar .track{flex:1;height:8px;background:var(--surface-3);border-radius:6px;overflow:hidden}
+.rating-bar .fill{height:100%;background:var(--accent-grad);border-radius:6px;width:0;transition:width 1s var(--ease)}
+.rating-bar .pct{width:38px;text-align:right;color:var(--text-3)}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:transform .4s var(--ease),border-color .3s}
+.review-card:hover{transform:translateY(-5px);border-color:var(--border-strong)}
+.review-head{display:flex;align-items:center;gap:13px;margin-bottom:14px}
+.avatar{width:46px;height:46px;border-radius:50%;background:var(--accent-grad);display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:700;color:#fff;flex-shrink:0}
+.review-head b{font-family:var(--font-display);display:block}
+.review-head .verified{font-size:.74rem;color:var(--accent-2);display:flex;align-items:center;gap:4px}
+.review-head .verified svg{width:13px;height:13px}
+.review-card p{color:var(--text-2);font-size:.94rem;margin:12px 0}
+.review-prod{font-size:.78rem;color:var(--text-3);display:flex;align-items:center;gap:7px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.review-prod .color-dot{width:11px;height:11px}
+
+/* ============ Features / Why ============ */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.why-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;
+  transition:transform .45s var(--ease),border-color .3s,background .3s;position:relative;overflow:hidden}
+.why-card::before{content:'';position:absolute;top:-40%;right:-30%;width:180px;height:180px;border-radius:50%;
+  background:var(--accent-grad);opacity:0;filter:blur(50px);transition:opacity .5s}
+.why-card:hover{transform:translateY(-7px);border-color:var(--border-strong)}
+.why-card:hover::before{opacity:.18}
+.why-icon{width:56px;height:56px;border-radius:16px;background:color-mix(in srgb,var(--accent) 14%,transparent);
+  display:grid;place-items:center;margin-bottom:20px;position:relative}
+.why-icon svg{width:27px;height:27px;color:var(--accent)}
+.why-card h3{font-size:1.24rem;margin-bottom:10px}
+.why-card p{color:var(--text-2);font-size:.94rem}
+
+/* ============ About ============ */
+.about-hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,60px);align-items:center}
+.about-visual{position:relative;aspect-ratio:1;border-radius:var(--radius-lg);overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,var(--surface-3),var(--surface));border:1px solid var(--border);display:grid;place-items:center;padding:40px}
+.about-visual .hp-svg{width:70%;filter:drop-shadow(0 40px 40px rgba(0,0,0,.5));animation:float3d 7s ease-in-out infinite}
+.about-lead{font-size:clamp(1.2rem,2.4vw,1.6rem);line-height:1.5;font-family:var(--font-display);font-weight:400;margin-bottom:24px}
+.about-lead b{font-weight:700}
+.about-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-top:20px}
+.value-item{padding:26px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+.value-item .n{font-family:var(--font-display);font-size:.8rem;color:var(--accent-2);letter-spacing:.1em}
+.value-item h4{font-size:1.15rem;margin:10px 0 8px}
+.value-item p{color:var(--text-2);font-size:.9rem}
+.stat-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:24px;text-align:center;
+  padding:clamp(34px,5vw,54px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-top:60px}
+.stat-band .big{font-family:var(--font-display);font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800}
+.stat-band span{color:var(--text-3);font-size:.9rem}
+
+/* ============ Cart ============ */
+.cart-layout{display:grid;grid-template-columns:1fr 380px;gap:34px;align-items:start}
+.cart-item{display:grid;grid-template-columns:110px 1fr auto;gap:18px;align-items:center;padding:20px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;transition:border-color .3s}
+.cart-item:hover{border-color:var(--border-strong)}
+.cart-item-img{width:110px;height:100px;border-radius:14px;background:var(--surface-2);display:grid;place-items:center;padding:10px}
+.cart-item-img .hp-svg{width:100%}
+.cart-item-info h4{font-family:var(--font-display);font-size:1.05rem}
+.cart-item-info .meta{display:flex;align-items:center;gap:8px;color:var(--text-3);font-size:.82rem;margin:6px 0 10px}
+.cart-item-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cart-item-end{display:flex;flex-direction:column;align-items:flex-end;gap:14px;height:100%}
+.cart-item-price{font-family:var(--font-display);font-weight:700;font-size:1.15rem}
+.cart-remove{color:var(--text-3);display:grid;place-items:center;width:36px;height:36px;border-radius:10px;transition:color .2s,background .2s}
+.cart-remove:hover{color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.cart-remove svg{width:18px;height:18px}
+.summary{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;position:sticky;top:calc(var(--header-h) + 20px)}
+.summary h3{font-size:1.3rem;margin-bottom:20px}
+.summary-row{display:flex;justify-content:space-between;padding:11px 0;color:var(--text-2)}
+.summary-row.total{border-top:1px solid var(--border);margin-top:10px;padding-top:18px;color:var(--text);
+  font-family:var(--font-display);font-size:1.35rem;font-weight:700}
+.promo{display:flex;gap:8px;margin:18px 0}
+.promo input{flex:1;padding:12px 16px;border-radius:100px;background:var(--surface-2);border:1px solid var(--border);color:var(--text)}
+.promo input:focus{outline:none;border-color:var(--accent)}
+.empty-state{text-align:center;padding:80px 20px}
+.empty-state .ico{width:96px;height:96px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;margin:0 auto 24px}
+.empty-state .ico svg{width:44px;height:44px;color:var(--text-3)}
+.empty-state h3{font-size:1.5rem;margin-bottom:10px}
+.empty-state p{color:var(--text-2);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto}
+
+/* ============ Forms / Auth ============ */
+.auth-wrap{max-width:460px;margin:0 auto;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:clamp(28px,4vw,44px);box-shadow:var(--shadow-md)}
+.auth-tabs{display:flex;background:var(--surface-2);border-radius:100px;padding:5px;margin-bottom:28px}
+.auth-tab{flex:1;padding:11px;border-radius:100px;font-family:var(--font-display);font-weight:600;color:var(--text-3);transition:all .3s var(--ease)}
+.auth-tab.active{background:var(--accent-grad);color:#fff;box-shadow:0 8px 20px -8px rgba(198,138,78,.6)}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.85rem;font-weight:600;color:var(--text-2);margin-bottom:8px;font-family:var(--font-display)}
+.field-input{position:relative}
+.field input{width:100%;padding:14px 16px;border-radius:var(--radius-sm);background:var(--surface-2);
+  border:1px solid var(--border);color:var(--text);transition:border-color .25s,background .25s}
+.field input:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+.field input.invalid{border-color:var(--danger)}
+.field .err{color:var(--danger);font-size:.78rem;margin-top:6px;display:none}
+.field.show-err .err{display:block}
+.field.show-err input{border-color:var(--danger)}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:8px;
+  display:grid;place-items:center;color:var(--text-3);transition:color .2s}
+.pw-toggle:hover{color:var(--text)}
+.pw-toggle svg{width:19px;height:19px}
+.form-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.checkbox{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;color:var(--text-2)}
+.checkbox input{width:18px;height:18px;accent-color:var(--accent)}
+.link-accent{color:var(--accent);font-size:.88rem;font-weight:500}
+.link-accent:hover{text-decoration:underline}
+.auth-divider{text-align:center;margin:24px 0;position:relative;color:var(--text-3);font-size:.82rem}
+.auth-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border)}
+.auth-divider span{background:var(--surface);padding:0 14px;position:relative}
+
+/* ============ Account Dashboard ============ */
+.dash{display:grid;grid-template-columns:280px 1fr;gap:30px;align-items:start}
+.dash-side{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;position:sticky;top:calc(var(--header-h) + 20px)}
+.dash-profile{text-align:center;padding-bottom:22px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.dash-profile .avatar{width:72px;height:72px;font-size:1.5rem;margin:0 auto 14px}
+.dash-profile b{font-family:var(--font-display);font-size:1.15rem;display:block}
+.dash-profile span{color:var(--text-3);font-size:.85rem}
+.dash-menu{display:flex;flex-direction:column;gap:4px}
+.dash-menu button{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;color:var(--text-2);
+  font-family:var(--font-display);font-weight:500;transition:background .25s,color .25s;text-align:left}
+.dash-menu button svg{width:19px;height:19px}
+.dash-menu button:hover{background:var(--surface-2);color:var(--text)}
+.dash-menu button.active{background:var(--accent-grad);color:#fff}
+.dash-menu button.logout{color:var(--danger);margin-top:8px}
+.dash-menu button.logout:hover{background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.dash-panel{min-height:400px}
+.dash-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:28px}
+.dash-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.dash-stat .ic{width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent);display:grid;place-items:center;margin-bottom:14px}
+.dash-stat .ic svg{width:22px;height:22px;color:var(--accent)}
+.dash-stat b{font-family:var(--font-display);font-size:1.9rem;display:block}
+.dash-stat span{color:var(--text-3);font-size:.85rem}
+.order-row{display:flex;align-items:center;gap:16px;padding:18px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-sm);margin-bottom:12px;flex-wrap:wrap}
+.order-row .oimg{width:60px;height:56px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;padding:6px}
+.order-row .oinfo{flex:1;min-width:140px}
+.order-row .oinfo b{font-family:var(--font-display)}
+.order-row .oinfo span{font-size:.8rem;color:var(--text-3)}
+.pill{padding:5px 13px;border-radius:100px;font-size:.76rem;font-weight:600;font-family:var(--font-display)}
+.pill.delivered{background:color-mix(in srgb,#3ecf8e 16%,transparent);color:#3ecf8e}
+.pill.transit{background:color-mix(in srgb,var(--star) 18%,transparent);color:var(--star)}
+.pill.processing{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+
+/* ============ Checkout ============ */
+.checkout-layout{display:grid;grid-template-columns:1fr 400px;gap:34px;align-items:start}
+.checkout-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:22px}
+.checkout-section h3{font-size:1.2rem;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.checkout-section h3 .step-num{width:30px;height:30px;border-radius:50%;background:var(--accent-grad);color:#fff;
+  display:grid;place-items:center;font-size:.9rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.pay-method{padding:20px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;
+  transition:border-color .25s,background .25s;display:flex;align-items:center;gap:14px}
+.pay-method:hover{border-color:var(--border-strong)}
+.pay-method.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.pay-method svg{width:26px;height:26px;color:var(--accent)}
+.pay-method b{font-family:var(--font-display);display:block;font-size:.95rem}
+.pay-method span{font-size:.78rem;color:var(--text-3)}
+.pay-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-strong);margin-left:auto;position:relative;flex-shrink:0}
+.pay-method.active .pay-radio{border-color:var(--accent)}
+.pay-method.active .pay-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--accent-grad)}
+/* Card preview */
+.card-preview{aspect-ratio:1.586;max-width:400px;border-radius:20px;padding:26px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#20233a,#0e1020);border:1px solid rgba(255,255,255,.12);margin-bottom:24px;
+  box-shadow:0 24px 50px -18px rgba(0,0,0,.6)}
+.card-preview::before{content:'';position:absolute;top:-40%;right:-10%;width:60%;height:120%;border-radius:50%;
+  background:var(--accent-grad);opacity:.4;filter:blur(30px)}
+.card-preview .cp-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.card-preview .chip{width:44px;height:34px;border-radius:7px;background:linear-gradient(135deg,#e8c07d,#b8862f);border:none}
+.card-preview .brand{font-family:var(--font-display);font-weight:800;letter-spacing:.14em;font-size:1.1rem}
+.card-preview .cp-num{font-family:var(--font-display);font-size:1.35rem;letter-spacing:.14em;margin:26px 0 18px;position:relative}
+.card-preview .cp-bottom{display:flex;justify-content:space-between;position:relative;font-size:.85rem}
+.card-preview .cp-bottom small{display:block;opacity:.6;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.card-preview .cp-bottom span{font-family:var(--font-display);letter-spacing:.06em}
+.order-mini{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.order-mini .omimg{width:52px;height:48px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;padding:6px;position:relative}
+.order-mini .omimg .qb{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:.68rem;display:grid;place-items:center;font-weight:700}
+.order-mini .ominfo{flex:1}
+.order-mini .ominfo b{font-size:.88rem;font-family:var(--font-display)}
+.order-mini .ominfo span{font-size:.76rem;color:var(--text-3)}
+.order-mini .omprice{font-family:var(--font-display);font-weight:600}
+/* Success */
+.success-wrap{max-width:560px;margin:0 auto;text-align:center;padding:40px 0}
+.success-check{width:110px;height:110px;border-radius:50%;background:color-mix(in srgb,#3ecf8e 16%,transparent);
+  display:grid;place-items:center;margin:0 auto 30px;animation:popIn .6s var(--ease)}
+.success-check svg{width:54px;height:54px;color:#3ecf8e}
+@keyframes popIn{0%{transform:scale(0)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.success-wrap h1{font-size:2.4rem;margin-bottom:14px}
+.success-wrap p{color:var(--text-2);margin-bottom:8px}
+.order-id{display:inline-block;font-family:var(--font-display);font-weight:700;background:var(--surface);
+  border:1px solid var(--border);padding:10px 22px;border-radius:100px;margin:20px 0}
+
+/* ============ Contact ============ */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contact-info-card{display:flex;gap:16px;padding:22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px}
+.contact-info-card .ic{width:48px;height:48px;border-radius:14px;background:color-mix(in srgb,var(--accent) 14%,transparent);display:grid;place-items:center;flex-shrink:0}
+.contact-info-card .ic svg{width:23px;height:23px;color:var(--accent)}
+.contact-info-card b{font-family:var(--font-display);display:block;margin-bottom:3px}
+.contact-info-card span{color:var(--text-2);font-size:.9rem}
+.contact-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(24px,4vw,36px)}
+.contact-form textarea{width:100%;padding:14px 16px;border-radius:var(--radius-sm);background:var(--surface-2);
+  border:1px solid var(--border);color:var(--text);resize:vertical;min-height:130px}
+.contact-form textarea:focus{outline:none;border-color:var(--accent)}
+
+/* ============ Newsletter / CTA band ============ */
+.cta-band{position:relative;border-radius:var(--radius-lg);overflow:hidden;padding:clamp(40px,6vw,72px);
+  background:linear-gradient(120deg,var(--surface-2),var(--surface));border:1px solid var(--border);text-align:center}
+.cta-band::before{content:'';position:absolute;inset:0;background:var(--hero-glow);opacity:.7}
+.cta-band>*{position:relative}
+.cta-band h2{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:14px}
+.cta-band p{color:var(--text-2);max-width:480px;margin:0 auto 28px}
+.newsletter{display:flex;gap:10px;max-width:460px;margin:0 auto;flex-wrap:wrap}
+.newsletter input{flex:1;min-width:200px;padding:15px 20px;border-radius:100px;background:var(--surface);
+  border:1px solid var(--border-strong);color:var(--text)}
+.newsletter input:focus{outline:none;border-color:var(--accent)}
+
+/* ============ Footer ============ */
+.footer{background:var(--bg-2);border-top:1px solid var(--border);padding:clamp(50px,7vw,80px) 0 30px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}
+.footer-brand .logo{margin-bottom:18px}
+.footer-brand p{color:var(--text-2);font-size:.92rem;max-width:280px;margin-bottom:20px}
+.socials{display:flex;gap:10px}
+.socials a{width:42px;height:42px;border-radius:12px;background:var(--surface);border:1px solid var(--border);
+  display:grid;place-items:center;color:var(--text-2);transition:all .3s var(--ease)}
+.socials a:hover{background:var(--accent-grad);color:#fff;transform:translateY(-3px);border-color:transparent}
+.socials a svg{width:19px;height:19px}
+.footer-col h5{font-family:var(--font-display);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:18px}
+.footer-col a{display:block;color:var(--text-2);font-size:.92rem;padding:6px 0;transition:color .25s,padding-left .25s}
+.footer-col a:hover{color:var(--accent);padding-left:5px}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:26px;border-top:1px solid var(--border);
+  flex-wrap:wrap;gap:14px;color:var(--text-3);font-size:.85rem}
+
+/* ============ Toast ============ */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:500;display:flex;flex-direction:column;gap:12px;max-width:calc(100vw - 48px)}
+.toast{display:flex;align-items:center;gap:13px;background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:14px;padding:15px 20px;box-shadow:var(--shadow-lg);min-width:280px;
+  animation:toastIn .45s var(--ease);backdrop-filter:blur(10px)}
+.toast.out{animation:toastOut .4s var(--ease) forwards}
+@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes toastOut{to{transform:translateX(120%);opacity:0}}
+.toast .tic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.toast .tic svg{width:20px;height:20px}
+.toast.success .tic{background:color-mix(in srgb,#3ecf8e 18%,transparent);color:#3ecf8e}
+.toast.info .tic{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+.toast.danger .tic{background:color-mix(in srgb,var(--danger) 18%,transparent);color:var(--danger)}
+.toast b{font-family:var(--font-display);font-size:.92rem;display:block}
+.toast span{font-size:.8rem;color:var(--text-3)}
+
+/* ============ Quick View Modal ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:400;
+  display:grid;place-items:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{background:var(--bg-2);border:1px solid var(--border-strong);border-radius:var(--radius-lg);max-width:820px;width:100%;
+  max-height:90vh;overflow-y:auto;transform:scale(.94) translateY(14px);transition:transform .4s var(--ease);box-shadow:var(--shadow-lg)}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-inner{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.modal-media{background:radial-gradient(120% 100% at 50% 30%,var(--surface-3),var(--surface));display:grid;place-items:center;padding:40px;position:relative}
+.modal-media .hp-svg{width:80%;filter:drop-shadow(0 30px 34px rgba(0,0,0,.5))}
+.modal-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:var(--surface);
+  border:1px solid var(--border);display:grid;place-items:center;z-index:2;transition:transform .25s}
+.modal-close:hover{transform:rotate(90deg)}
+.modal-close svg{width:18px;height:18px}
+.modal-body{padding:34px;display:flex;flex-direction:column}
+.modal-body h2{font-size:1.7rem;margin:8px 0}
+
+/* ============ Cinematic photo utilities ============ */
+.ph{background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#0d0b0e;background-image:var(--img-fallback)}
+.ph.loaded{background-image:var(--_img)}
+.img-in{animation:imgFade 1s var(--ease)}
+@keyframes imgFade{from{opacity:.15;filter:blur(8px)}to{opacity:1;filter:blur(0)}}
+.hp-photo{object-fit:contain;aspect-ratio:1;background:transparent;animation:imgFade .6s var(--ease)}
+.pcard-media .hp-photo{filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))}
+.grain::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+
+/* ============ Hero photo composition ============ */
+.hero-stage{position:relative;display:grid;place-items:center;min-height:min(600px,74vh);perspective:none}
+.hero-photo-frame{position:relative;width:min(500px,92%);aspect-ratio:4/5;border-radius:26px;overflow:hidden;
+  border:1px solid var(--border-strong);box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.04);
+  transform:translateY(0);animation:floatCard 8s ease-in-out infinite}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.hero-photo{position:absolute;inset:0;background-size:cover;background-position:center 22%;background-color:#0d0b0e;
+  background-image:var(--img-fallback);transition:transform 9s var(--ease),opacity .8s;transform:scale(1.06)}
+.hero-photo-frame:hover .hero-photo{transform:scale(1.12)}
+.hero-photo-glow{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(8,7,10,.85) 100%),
+  radial-gradient(120% 80% at 70% 10%,rgba(198,138,78,.28),transparent 55%);z-index:1}
+.hero-badge{position:absolute;left:20px;bottom:20px;z-index:2;padding:14px 20px;border-radius:16px;
+  background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(14px);border:1px solid var(--border-strong)}
+.hero-badge-eyebrow{font-family:var(--font-display);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-2)}
+.hero-badge b{display:block;font-family:var(--font-display);font-size:1.3rem;margin:2px 0}
+.hero-badge-sub{font-size:.78rem;color:var(--text-2)}
+.hero-wave{position:absolute;right:20px;bottom:26px;z-index:2;display:flex;align-items:flex-end;gap:4px;height:44px}
+.hero-wave span{width:4px;border-radius:3px;background:var(--accent-grad);animation:eq 1.1s ease-in-out infinite}
+.hero-wave span:nth-child(odd){animation-duration:1.4s}
+.hero-wave span:nth-child(3n){animation-duration:.9s}
+.hero-wave span:nth-child(1){height:40%}.hero-wave span:nth-child(2){height:70%}.hero-wave span:nth-child(3){height:30%}
+.hero-wave span:nth-child(4){height:90%}.hero-wave span:nth-child(5){height:55%}.hero-wave span:nth-child(6){height:75%}
+.hero-wave span:nth-child(7){height:35%}.hero-wave span:nth-child(8){height:85%}.hero-wave span:nth-child(9){height:50%}
+.hero-wave span:nth-child(10){height:65%}.hero-wave span:nth-child(11){height:40%}.hero-wave span:nth-child(12){height:80%}
+.hero-wave span:nth-child(13){height:45%}.hero-wave span:nth-child(14){height:60%}
+@keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+/* ============ Immersive section ============ */
+.immersive{position:relative;min-height:min(640px,88vh);display:flex;align-items:center;overflow:hidden;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.immersive-photo{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#0d0b0e;background-image:var(--img-fallback);transform:scale(1.05)}
+.immersive-veil{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 8%,rgba(8,7,10,.72) 42%,rgba(8,7,10,.25) 100%),
+  radial-gradient(80% 100% at 100% 50%,rgba(198,138,78,.20),transparent 60%)}
+:root[data-theme="light"] .immersive-veil{background:linear-gradient(90deg,var(--bg) 6%,rgba(242,237,228,.75) 42%,rgba(242,237,228,.2) 100%)}
+.immersive-inner{position:relative;z-index:2;padding:60px clamp(20px,5vw,48px)}
+.immersive-copy{max-width:560px}
+.immersive-metric{display:flex;align-items:center;gap:20px;margin:30px 0 34px;flex-wrap:wrap}
+.metric-num{font-family:var(--font-display);font-size:3.4rem;font-weight:800;line-height:1;color:var(--accent-2)}
+.metric-num sup{font-size:1.1rem;font-weight:600;margin-left:2px}
+.metric-wave{display:flex;align-items:center;gap:3px;height:46px}
+.metric-wave span{width:4px;border-radius:3px;background:linear-gradient(180deg,var(--accent-2),var(--accent));animation:eq 1.2s ease-in-out infinite}
+.metric-wave span:nth-child(2n){animation-duration:.85s}.metric-wave span:nth-child(3n){animation-duration:1.5s}
+.metric-wave span:nth-child(4n){animation-duration:1.05s}
+.metric-wave span:nth-child(1){height:30%}.metric-wave span:nth-child(2){height:60%}.metric-wave span:nth-child(3){height:85%}
+.metric-wave span:nth-child(4){height:45%}.metric-wave span:nth-child(5){height:95%}.metric-wave span:nth-child(6){height:55%}
+.metric-wave span:nth-child(7){height:75%}.metric-wave span:nth-child(8){height:35%}.metric-wave span:nth-child(9){height:90%}
+.metric-wave span:nth-child(10){height:50%}.metric-wave span:nth-child(11){height:70%}.metric-wave span:nth-child(12){height:40%}
+.metric-wave span:nth-child(13){height:80%}.metric-wave span:nth-child(14){height:48%}.metric-wave span:nth-child(15){height:65%}
+.metric-wave span:nth-child(16){height:38%}.metric-wave span:nth-child(17){height:78%}.metric-wave span:nth-child(18){height:52%}
+.metric-label{font-size:.85rem;color:var(--text-3);max-width:150px}
+
+/* ============ Technology grid ============ */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.tech-card{position:relative;background:linear-gradient(180deg,var(--surface),var(--bg-2));border:1px solid var(--border);
+  border-radius:var(--radius);padding:30px;overflow:hidden;transition:transform .5s var(--ease),border-color .35s}
+.tech-card::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,rgba(230,185,138,.35),transparent 45%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
+.tech-card:hover{transform:translateY(-6px);border-color:var(--border-strong)}
+.tech-card:hover::after{opacity:1}
+.tech-ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;margin-bottom:18px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 22%,transparent),color-mix(in srgb,var(--accent) 6%,transparent));
+  border:1px solid var(--border-strong)}
+.tech-ic svg{width:26px;height:26px;color:var(--accent-2)}
+.tech-card h3{font-size:1.2rem;margin-bottom:9px}
+.tech-card p{color:var(--text-2);font-size:.92rem}
+
+/* ============ Brand band ============ */
+.brand-band{position:relative;min-height:min(560px,80vh);display:flex;align-items:center;overflow:hidden}
+.brand-photo{position:absolute;inset:0;background-size:cover;background-position:center 30%;background-color:#0d0b0e;background-image:var(--img-fallback);transform:scale(1.05)}
+.brand-veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,7,10,.92) 0%,rgba(8,7,10,.6) 45%,rgba(8,7,10,.35) 100%),
+  radial-gradient(90% 90% at 0% 50%,rgba(165,103,47,.22),transparent 60%)}
+.brand-inner{position:relative;z-index:2;padding:70px clamp(20px,5vw,48px)}
+.brand-copy{max-width:560px}
+.brand-title{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:18px;color:#f6f2ea}
+.brand-band .section-sub{color:#c9c2b6}
+
+/* ============ Scroll reveal ============ */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+
+/* ============ Responsive ============ */
+@media(max-width:1080px){
+  .hero-inner{grid-template-columns:1fr;gap:20px;text-align:center;padding-top:40px}
+  .hero-copy{max-width:600px;margin:0 auto}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .hero-cta,.hero-stats{justify-content:center}
+  .hero-stage{min-height:min(440px,56vh);order:-1}
+  .about-hero{grid-template-columns:1fr}
+  .pdp{grid-template-columns:1fr}
+  .pdp-gallery{position:static}
+}
+@media(max-width:920px){
+  .shop-layout{grid-template-columns:1fr}
+  .filters{position:fixed;top:0;right:0;height:100%;width:min(340px,88vw);z-index:250;border-radius:0;
+    transform:translateX(100%);transition:transform .4s var(--ease);overflow-y:auto}
+  .filters.open{transform:translateX(0)}
+  .filter-toggle-mobile{display:inline-flex}
+  .cart-layout,.checkout-layout{grid-template-columns:1fr}
+  .summary,.checkout-layout .summary{position:static}
+  .dash{grid-template-columns:1fr}
+  .dash-side{position:static}
+  .contact-layout{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .modal-inner{grid-template-columns:1fr}
+  .modal-media{padding:30px}
+}
+@media(max-width:640px){
+  :root{--header-h:64px}
+  .reviews-summary{grid-template-columns:1fr;gap:24px;text-align:center}
+  .rating-bars{max-width:340px;margin:0 auto;width:100%}
+  .cart-item{grid-template-columns:80px 1fr;gap:14px}
+  .cart-item-img{width:80px;height:76px}
+  .cart-item-end{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}
+  .footer-grid{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .pay-methods{grid-template-columns:1fr}
+  .hero h1{font-size:clamp(2.6rem,13vw,4rem)}
+  .pdp-actions .btn{min-width:100%}
+  .hero-stats{gap:22px}
+  .section{padding:56px 0}
+  .immersive,.brand-band{min-height:auto;padding:20px 0}
+  .immersive-veil{background:linear-gradient(180deg,rgba(8,7,10,.55) 0%,rgba(8,7,10,.86) 55%,var(--bg) 100%)}
+  :root[data-theme="light"] .immersive-veil{background:linear-gradient(180deg,rgba(242,237,228,.55) 0%,rgba(242,237,228,.9) 55%,var(--bg) 100%)}
+  .brand-veil{background:linear-gradient(180deg,rgba(8,7,10,.6) 0%,rgba(8,7,10,.9) 60%,rgba(8,7,10,.96) 100%)}
+  .immersive-inner,.brand-inner{padding:clamp(48px,12vw,80px) clamp(20px,5vw,48px)}
+  .metric-label{max-width:none}
+  .brand-title{font-size:clamp(2.2rem,9vw,3.2rem)}
+}
+@media(max-width:400px){
+  .grid-products{grid-template-columns:1fr}
+  .hero-stat b{font-size:1.4rem}
+}
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.15s!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<!-- ============ HEADER ============ -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a class="logo" href="#" data-nav="home" aria-label="AUDIRA home">
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#a5672f"/><stop offset="1" stop-color="#e8c39a"/></linearGradient></defs>
+        <path d="M8 22v-3a12 12 0 0 1 24 0v3" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round"/>
+        <rect x="5" y="21" width="6" height="12" rx="3" fill="url(#lg)"/>
+        <rect x="29" y="21" width="6" height="12" rx="3" fill="url(#lg)"/>
+        <circle cx="20" cy="19" r="2.4" fill="url(#lg)"/>
+      </svg>
+      <span>AUD<b>IRA</b></span>
+    </a>
+    <div class="header-actions">
+      <button class="icon-btn" data-nav="account" aria-label="Account" title="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" data-nav="wishlist" aria-label="Wishlist" title="Wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C.5 8 3 4 6.5 4 9 4 12 7 12 7s3-3 5.5-3C21 4 23.5 8 21.5 12 19 16.5 12 21 12 21z" stroke-linejoin="round"/></svg>
+        <span class="badge" id="wishBadge">0</span>
+      </button>
+      <button class="icon-btn" data-nav="cart" aria-label="Cart" title="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16l-1.5 11a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 6z" stroke-linejoin="round"/><path d="M9 6a3 3 0 0 1 6 0" stroke-linecap="round"/></svg>
+        <span class="badge" id="cartBadge">0</span>
+      </button>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ NAV DRAWER ============ -->
+<div class="nav-overlay" id="navOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <a class="logo" href="#" data-nav="home"><span>AUD<b>IRA</b></span></a>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <nav class="drawer-nav" id="drawerNav">
+    <a class="drawer-link" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" stroke-linejoin="round"/></svg>Home</a>
+    <a class="drawer-link" data-nav="shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h14l1 12H4zM8 8V6a4 4 0 0 1 8 0v2" stroke-linejoin="round"/></svg>Shop</a>
+    <a class="drawer-link" data-nav="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01" stroke-linecap="round"/></svg>About</a>
+    <a class="drawer-link" data-nav="reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" stroke-linejoin="round"/></svg>Reviews</a>
+    <a class="drawer-link" data-nav="contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6" stroke-linejoin="round"/></svg>Contact</a>
+    <a class="drawer-link" data-nav="wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C.5 8 3 4 6.5 4 9 4 12 7 12 7s3-3 5.5-3C21 4 23.5 8 21.5 12 19 16.5 12 21 12 21z" stroke-linejoin="round"/></svg>Wishlist<span class="mini-badge" id="wishMini">0</span></a>
+    <a class="drawer-link" data-nav="cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16l-1.5 11a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 6z" stroke-linejoin="round"/></svg>Cart<span class="mini-badge" id="cartMini">0</span></a>
+    <a class="drawer-link" data-nav="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6" stroke-linecap="round"/></svg>Account</a>
+  </nav>
+  <div class="drawer-foot">
+    <div class="theme-row">
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg>
+        Theme
+      </span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark and light theme">
+        <span class="theme-toggle-knob">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main id="main">
+
+  <!-- ===== HOME ===== -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="mono-eyebrow">Next-Gen Acoustic Engineering</span>
+          <h1>Step Into the <span class="grad-text">Next Generation</span> of Sound.</h1>
+          <p class="hero-sub">Cinematic spatial audio, adaptive noise cancellation and materials worthy of a heirloom. This is sound, refined beyond the ordinary.</p>
+          <div class="hero-cta">
+            <button class="btn btn-primary btn-lg" data-nav="shop">Explore Headphones
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="btn btn-ghost btn-lg" data-nav="shop">Shop Collection</button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><b>40h</b><span>Playback</span></div>
+            <div class="hero-stat"><b>−42dB</b><span>ANC Depth</span></div>
+            <div class="hero-stat"><b>4.9★</b><span>12k Reviews</span></div>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="hero-photo-frame reveal">
+            <div class="hero-photo" data-img="hero"></div>
+            <div class="hero-photo-glow"></div>
+            <div class="hero-badge">
+              <span class="hero-badge-eyebrow">Flagship</span>
+              <b>AUDIRA A1</b>
+              <span class="hero-badge-sub">Adaptive Hybrid ANC</span>
+            </div>
+            <div class="hero-wave" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-hint"><span class="mouse"></span>Scroll</div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="marquee">
+      <div class="marquee-track" id="marqueeTrack"></div>
+    </div>
+
+    <!-- New Arrivals -->
+    <section class="section container">
+      <div class="section-head reveal">
+        <span class="mono-eyebrow">Just Landed</span>
+        <h2 class="section-title">New Arrivals</h2>
+        <p class="section-sub">The latest additions to the AUDIRA family — engineered to redefine your listening experience.</p>
+      </div>
+      <div class="grid-products" id="newArrivals"></div>
+    </section>
+
+    <!-- Immersive Sound -->
+    <section class="immersive">
+      <div class="immersive-photo" data-img="immersive"></div>
+      <div class="immersive-veil"></div>
+      <div class="container immersive-inner">
+        <div class="immersive-copy reveal">
+          <span class="mono-eyebrow">3D Spatial Audio</span>
+          <h2 class="section-title">Immersive Sound,<br>All Around You</h2>
+          <p class="section-sub">Step into your favourite track and feel every note come alive — as if it's happening all around you. That's the magic of true dimensional sound.</p>
+          <div class="immersive-metric">
+            <div class="metric-num">40<sup>dB</sup></div>
+            <div class="metric-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="metric-label">Active noise reduction across the full spectrum</div>
+          </div>
+          <button class="btn btn-primary btn-lg" data-nav="shop">Hear the Difference
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology -->
+    <section class="section container">
+      <div class="section-head center reveal">
+        <span class="mono-eyebrow">Engineered to the Detail</span>
+        <h2 class="section-title">The Technology Inside</h2>
+        <p class="section-sub" style="margin:0 auto">Six breakthroughs, working in concert — so all you notice is the music.</p>
+      </div>
+      <div class="tech-grid" id="techGrid"></div>
+    </section>
+
+    <!-- Best Sellers -->
+    <section class="section container">
+      <div class="section-head reveal" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:20px;flex-wrap:wrap">
+        <div>
+          <span class="mono-eyebrow">Loved by Thousands</span>
+          <h2 class="section-title" style="margin-bottom:0">Best Sellers</h2>
+        </div>
+        <button class="btn btn-ghost" data-nav="shop">View All</button>
+      </div>
+      <div class="grid-products" id="bestSellers"></div>
+    </section>
+
+    <!-- Brand / Lifestyle -->
+    <section class="brand-band">
+      <div class="brand-photo" data-img="brand"></div>
+      <div class="brand-veil"></div>
+      <div class="container brand-inner">
+        <div class="brand-copy reveal">
+          <span class="mono-eyebrow">The AUDIRA Standard</span>
+          <h2 class="brand-title">Louder Than Luxury.</h2>
+          <p class="section-sub">More than headphones — a statement. Hand-finished in aerospace aluminium and protein leather, tuned by engineers who refuse to compromise. Worn by those who never do either.</p>
+          <div class="hero-cta">
+            <button class="btn btn-solid btn-lg" data-nav="about">Our Story</button>
+            <button class="btn btn-ghost btn-lg" data-nav="shop">Shop the Collection</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews teaser -->
+    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+      <div class="container">
+        <div class="section-head center reveal">
+          <span class="mono-eyebrow">Verified Buyers</span>
+          <h2 class="section-title">What Our Listeners Say</h2>
+        </div>
+        <div class="reviews-grid" id="homeReviews"></div>
+        <div style="text-align:center;margin-top:36px" class="reveal">
+          <button class="btn btn-ghost" data-nav="reviews">Read All Reviews</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section container">
+      <div class="cta-band reveal">
+        <span class="mono-eyebrow">Join the Movement</span>
+        <h2>Elevate Your Everyday Sound</h2>
+        <p>Subscribe for exclusive drops, early access, and 10% off your first AUDIRA.</p>
+        <form class="newsletter" id="newsletterForm">
+          <input type="email" placeholder="Enter your email" aria-label="Email address" required>
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===== SHOP ===== -->
+  <section class="view" id="view-shop">
+    <div class="page-hero container">
+      <h1>The Collection</h1>
+      <p>Six masterpieces of acoustic engineering. Find the AUDIRA that speaks to you.</p>
+    </div>
+    <div class="container section" style="padding-top:30px">
+      <div class="shop-toolbar">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+          <input type="search" id="shopSearch" placeholder="Search headphones..." aria-label="Search products">
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <span class="result-count" id="resultCount"></span>
+          <button class="btn btn-ghost filter-toggle-mobile" id="filterToggle" style="padding:.7em 1.2em">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M4 6h16M7 12h10M10 18h4" stroke-linecap="round"/></svg>Filters
+          </button>
+          <div class="select-wrap">
+            <select id="sortSelect" aria-label="Sort products">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+              <option value="name">Name A–Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="shop-layout">
+        <aside class="filters" id="filtersPanel">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <h3 style="font-size:1.1rem">Filters</h3>
+            <button class="link-accent" id="clearFilters" style="background:none">Clear all</button>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Category</div>
+            <div class="chip-row" id="catFilters"></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Colour</div>
+            <div class="color-swatches" id="colorFilters"></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-title">Max Price</div>
+            <input type="range" class="price-slider" id="priceSlider" min="129" max="399" value="399" step="10">
+            <div class="price-vals"><span>$129</span><span id="priceMax">$399</span></div>
+          </div>
+        </aside>
+        <div>
+          <div class="grid-products" id="shopGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCT DETAIL ===== -->
+  <section class="view" id="view-product">
+    <div class="container" style="padding-top:calc(var(--header-h) + 30px)">
+      <div class="breadcrumb" style="justify-content:flex-start">
+        <a data-nav="home">Home</a><span>/</span><a data-nav="shop">Shop</a><span>/</span><span id="pdpCrumb"></span>
+      </div>
+    </div>
+    <div class="container" id="pdpContent"></div>
+  </section>
+
+  <!-- ===== REVIEWS ===== -->
+  <section class="view" id="view-reviews">
+    <div class="page-hero container"><h1>Reviews</h1><p>Real words from real listeners. Here's why the AUDIRA community keeps coming back.</p></div>
+    <div class="container section" style="padding-top:30px">
+      <div class="reviews-summary reveal" id="reviewsSummary"></div>
+      <div class="reviews-grid" id="allReviews"></div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="view" id="view-about">
+    <div class="container section" style="padding-top:calc(var(--header-h) + 40px)">
+      <div class="about-hero">
+        <div class="reveal">
+          <span class="mono-eyebrow">Our Story</span>
+          <h1 style="font-size:clamp(2rem,5vw,3.4rem);font-weight:800;margin:16px 0 22px">Sound, Refined.</h1>
+          <p class="about-lead">We build headphones for people who hear the <b>difference between good and extraordinary</b> — and refuse to settle for less.</p>
+          <p style="color:var(--text-2)">Founded in 2021 by a small team of acoustic engineers and industrial designers, AUDIRA began with a single obsession: to reproduce sound exactly as the artist intended. No coloration. No compromise. Just pure, refined audio.</p>
+        </div>
+        <div class="about-visual reveal d1"><div class="hp-svg" id="aboutHp"></div></div>
+      </div>
+
+      <div class="about-values">
+        <div class="value-item reveal"><div class="n">01 — Philosophy</div><h4>Brand Philosophy</h4><p>Luxury is restraint. We remove everything unnecessary until only the essential — perfect sound — remains.</p></div>
+        <div class="value-item reveal d1"><div class="n">02 — Engineering</div><h4>Sound Engineering</h4><p>Custom 40mm beryllium-coated drivers tuned across 200+ hours of listening tests in anechoic chambers.</p></div>
+        <div class="value-item reveal d2"><div class="n">03 — Design</div><h4>Design Philosophy</h4><p>Every curve is intentional. Sculpted for the human head, finished to the tolerance of fine jewellery.</p></div>
+        <div class="value-item reveal"><div class="n">04 — Materials</div><h4>Premium Materials</h4><p>Aerospace-grade aluminium, protein leather, and memory foam sourced from the world's finest suppliers.</p></div>
+        <div class="value-item reveal d1"><div class="n">05 — Innovation</div><h4>Innovation</h4><p>Adaptive ANC, spatial audio, and lossless codecs — the frontier of personal sound, refined continuously.</p></div>
+        <div class="value-item reveal d2"><div class="n">06 — Promise</div><h4>Our Promise</h4><p>A 2-year warranty and lifetime support. We stand behind every pair, for as long as you own it.</p></div>
+      </div>
+
+      <div class="stat-band reveal">
+        <div><div class="big grad-text">1.2M+</div><span>Headphones Sold</span></div>
+        <div><div class="big grad-text">4.9★</div><span>Average Rating</span></div>
+        <div><div class="big grad-text">38</div><span>Countries Shipped</span></div>
+        <div><div class="big grad-text">2yr</div><span>Warranty Standard</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="view" id="view-contact">
+    <div class="page-hero container"><h1>Get in Touch</h1><p>Questions about a product, an order, or a partnership? Our team responds within one business day.</p></div>
+    <div class="container section" style="padding-top:30px">
+      <div class="contact-layout">
+        <div class="reveal">
+          <div class="contact-info-card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6" stroke-linejoin="round"/></svg></div><div><b>Email Us</b><span>support@audira.audio</span></div></div>
+          <div class="contact-info-card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg></div><div><b>Call Us</b><span>+1 (800) 283-4726</span></div></div>
+          <div class="contact-info-card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>Visit Us</b><span>140 Audio Lane, San Francisco, CA</span></div></div>
+          <div class="contact-info-card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div><div><b>Hours</b><span>Mon–Fri, 9am – 6pm PST</span></div></div>
+        </div>
+        <form class="contact-form reveal d1" id="contactForm">
+          <div class="grid-2">
+            <div class="field"><label>Name</label><div class="field-input"><input type="text" required placeholder="Your name"></div></div>
+            <div class="field"><label>Email</label><div class="field-input"><input type="email" required placeholder="you@email.com"></div></div>
+          </div>
+          <div class="field"><label>Subject</label><div class="field-input"><input type="text" required placeholder="How can we help?"></div></div>
+          <div class="field"><label>Message</label><textarea required placeholder="Tell us more..."></textarea></div>
+          <button class="btn btn-primary btn-block btn-lg" type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WISHLIST ===== -->
+  <section class="view" id="view-wishlist">
+    <div class="page-hero container"><h1>Your Wishlist</h1><p>The AUDIRA pieces you've got your eye on.</p></div>
+    <div class="container section" style="padding-top:30px" id="wishlistContent"></div>
+  </section>
+
+  <!-- ===== CART ===== -->
+  <section class="view" id="view-cart">
+    <div class="page-hero container"><h1>Your Cart</h1></div>
+    <div class="container section" style="padding-top:30px" id="cartContent"></div>
+  </section>
+
+  <!-- ===== ACCOUNT (auth) ===== -->
+  <section class="view" id="view-account">
+    <div class="container section" style="padding-top:calc(var(--header-h) + 40px)" id="accountContent"></div>
+  </section>
+
+  <!-- ===== CHECKOUT ===== -->
+  <section class="view" id="view-checkout">
+    <div class="page-hero container"><h1>Checkout</h1></div>
+    <div class="container section" style="padding-top:30px" id="checkoutContent"></div>
+  </section>
+
+  <!-- ===== ORDER SUCCESS ===== -->
+  <section class="view" id="view-success">
+    <div class="container section" style="padding-top:calc(var(--header-h) + 40px)" id="successContent"></div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="#" data-nav="home">
+          <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <path d="M8 22v-3a12 12 0 0 1 24 0v3" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="5" y="21" width="6" height="12" rx="3" fill="url(#lg)"/><rect x="29" y="21" width="6" height="12" rx="3" fill="url(#lg)"/>
+            <circle cx="20" cy="19" r="2.4" fill="url(#lg)"/>
+          </svg><span>AUD<b>IRA</b></span>
+        </a>
+        <p>Sound, Refined. Precision-engineered headphones for those who refuse to compromise on audio.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 3h3l-7 8 8 10h-6l-5-6-5 6H3l7-9L3 3h6l4 5 5-5z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M11 9.5v5l4-2.5z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.3 1.7 3.8 4 4v3c-1.5 0-2.9-.4-4-1.2V16a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v3.1a2.5 2.5 0 1 0 1.6 2.3V3z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Shop</h5>
+        <a data-nav="shop">All Headphones</a><a data-nav="shop" data-cat="Wireless">Wireless</a>
+        <a data-nav="shop" data-cat="Noise Cancelling">Noise Cancelling</a><a data-nav="shop" data-cat="Studio">Studio</a><a data-nav="shop" data-cat="Sport">Sport</a>
+      </div>
+      <div class="footer-col"><h5>Support</h5>
+        <a data-nav="contact">Contact Us</a><a href="#" data-info="shipping">Shipping</a><a href="#" data-info="returns">Returns</a>
+        <a href="#" data-info="warranty">Warranty</a><a data-nav="account">Track Order</a>
+      </div>
+      <div class="footer-col"><h5>Company</h5>
+        <a data-nav="about">About</a><a data-nav="reviews">Reviews</a><a href="#" data-info="privacy">Privacy Policy</a>
+        <a href="#" data-info="terms">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AUDIRA Audio Inc. All rights reserved.</span>
+      <span>Designed for those who listen closely.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast + Modal containers -->
+<div class="toast-wrap" id="toastWrap"></div>
+<div class="modal-overlay" id="quickModal"><div class="modal" id="quickModalInner"></div></div>
+
+<script>
+"use strict";
+/* ============================================================
+   AUDIRA — Application (vanilla JS, no dependencies)
+   ============================================================ */
+const $ = (s,c=document)=>c.querySelector(s);
+const $$ = (s,c=document)=>[...c.querySelectorAll(s)];
+const money = n => '$'+n.toFixed(2);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- Colour palette per product ---------- */
+const COLORS = {
+  black:  {name:'Midnight Black', hex:'#1c1e26', cup:'#26282f', cup2:'#14151b', accent:'#3a3d47', pad:'#0e0f13'},
+  white:  {name:'Arctic White',   hex:'#eef0f4', cup:'#f4f6fa', cup2:'#d3d7e0', accent:'#c2c7d2', pad:'#e6e9ef'},
+  orange: {name:'Sunset Orange',  hex:'#ff6a3d', cup:'#ff7a4d', cup2:'#e0532a', accent:'#ffb38f', pad:'#c8431f'},
+  grey:   {name:'Titanium Grey',  hex:'#8b909c', cup:'#9aa0ac', cup2:'#6b7079', accent:'#c3c8d1', pad:'#565a63'},
+  blue:   {name:'Deep Blue',      hex:'#2f4bff', cup:'#3a56e8', cup2:'#1e2fa8', accent:'#7d90ff', pad:'#16205f'},
+  green:  {name:'Forest Green',   hex:'#2f8f5b', cup:'#35a066', cup2:'#1f6b41', accent:'#7fd6a3', pad:'#164d2e'}
+};
+
+/* ---------- Premium headphone SVG generator ---------- */
+let __hpId = 0;
+function headphoneSVG(key){
+  const c = COLORS[key] || COLORS.black;
+  const id = 'hp'+(__hpId++);
+  return `<svg class="hp-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AUDIRA headphone in ${c.name}">
+  <defs>
+    <linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${c.accent}"/><stop offset="1" stop-color="${c.cup2}"/></linearGradient>
+    <radialGradient id="${id}c" cx="38%" cy="32%" r="75%">
+      <stop offset="0" stop-color="${c.cup}"/><stop offset="55%" stop-color="${c.cup}"/><stop offset="100%" stop-color="${c.cup2}"/></radialGradient>
+    <radialGradient id="${id}p" cx="42%" cy="40%" r="70%">
+      <stop offset="0" stop-color="${c.pad}"/><stop offset="100%" stop-color="${c.cup2}"/></radialGradient>
+    <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <!-- headband -->
+  <path d="M56 168 V138 A94 94 0 0 1 244 138 V168" fill="none" stroke="url(#${id}b)" stroke-width="20" stroke-linecap="round"/>
+  <path d="M56 168 V138 A94 94 0 0 1 244 138 V168" fill="none" stroke="#ffffff" stroke-opacity=".14" stroke-width="5" stroke-linecap="round" transform="translate(0,-5)"/>
+  <!-- left arm -->
+  <rect x="46" y="150" width="24" height="46" rx="12" fill="url(#${id}b)"/>
+  <rect x="230" y="150" width="24" height="46" rx="12" fill="url(#${id}b)"/>
+  <!-- left cup -->
+  <g>
+    <ellipse cx="58" cy="204" rx="34" ry="44" fill="url(#${id}c)" stroke="${c.cup2}" stroke-width="1.5"/>
+    <ellipse cx="58" cy="204" rx="22" ry="30" fill="url(#${id}p)"/>
+    <ellipse cx="50" cy="192" rx="9" ry="13" fill="url(#${id}s)"/>
+  </g>
+  <!-- right cup -->
+  <g>
+    <ellipse cx="242" cy="204" rx="34" ry="44" fill="url(#${id}c)" stroke="${c.cup2}" stroke-width="1.5"/>
+    <ellipse cx="242" cy="204" rx="22" ry="30" fill="url(#${id}p)"/>
+    <ellipse cx="234" cy="192" rx="9" ry="13" fill="url(#${id}s)"/>
+    <circle cx="242" cy="204" r="6" fill="${c.accent}" opacity=".7"/>
+  </g>
+</svg>`;
+}
+
+/* ============================================================
+   OPTIONAL REAL PRODUCT PHOTOS  ⟶  drop-in your own images here
+   ------------------------------------------------------------
+   By default every product uses the built-in premium SVG render
+   (which also powers the colour-switch). To use your OWN photos:
+     1. Create a folder next to index.html:  images/products/
+     2. Add files, then map them below per colour, e.g.:
+          a1: { black:'images/products/a1-black.png',
+                blue :'images/products/a1-blue.png' }
+   Paths are RELATIVE (GitHub-Pages safe). Any missing/failed image
+   automatically falls back to the SVG render — nothing ever breaks.
+   You can also use full https:// URLs instead of local paths.
+   ============================================================ */
+const PRODUCT_PHOTOS = { a1:{}, a2:{}, a3:{}, a4:{}, a5:{}, a6:{} };
+window.__hpFallback = k => headphoneSVG(k);
+function productMedia(p, colorKey){
+  colorKey = colorKey || p.base;
+  const url = (PRODUCT_PHOTOS[p.id]||{})[colorKey];
+  if(url){
+    return `<img class="hp-svg hp-photo" src="${url}" alt="${esc(p.name)} — ${esc(COLORS[colorKey].name)}" loading="lazy" onerror="this.outerHTML=window.__hpFallback('${colorKey}')">`;
+  }
+  return headphoneSVG(colorKey);
+}
+
+/* ---------- Icon set ---------- */
+const IC = {
+  cart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16l-1.5 11a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 6z" stroke-linejoin="round"/></svg>',
+  heart:'<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C.5 8 3 4 6.5 4 9 4 12 7 12 7s3-3 5.5-3C21 4 23.5 8 21.5 12 19 16.5 12 21 12 21z" stroke-linejoin="round"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12l5 5L20 6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z" stroke-linejoin="round"/></svg>',
+  ship:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round"/></svg>',
+  wave:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4M21 12h.01" stroke-linecap="round"/></svg>',
+  battery:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11v2" stroke-linecap="round"/><rect x="5" y="10" width="8" height="4" rx="1" fill="currentColor"/></svg>',
+  bt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 8l8 8-4 3V5l4 3-8 8" stroke-linejoin="round"/></svg>',
+  gem:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l3 5-9 13L3 8z" stroke-linejoin="round"/><path d="M3 8h18M9 3l-3 5 6 13 6-13-3-5" stroke-linejoin="round"/></svg>',
+  ear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 10a6 6 0 1 1 12 0c0 3-2 3.5-3 5s-.5 3-2.5 3a2.5 2.5 0 0 1-2.5-2.5" stroke-linecap="round"/><path d="M9 10a3 3 0 0 1 6 0" stroke-linecap="round"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+
+/* ---------- Products (6) ---------- */
+const PRODUCTS = [
+  {id:'a1', model:'A1', name:'AUDIRA A1', base:'black',
+   category:'Wireless', tagline:'The flagship all-rounder', tag:'Flagship',
+   price:349, old:399, rating:4.9, reviews:2148,
+   colors:['black','grey','blue'],
+   desc:'Our flagship over-ear. Reference-grade sound with adaptive noise cancellation for everyday brilliance.',
+   sound:'40mm beryllium-coated dynamic drivers deliver a wide, holographic soundstage with textured bass and crystalline highs.',
+   anc:'Adaptive Hybrid ANC removes up to −42dB of ambient noise, auto-adjusting to your environment in real time.',
+   battery:'40 hours with ANC on, 55 hours off. A 5-minute charge yields 6 hours of playback.',
+   bt:'Bluetooth 5.4 with multipoint, LDAC & aptX Lossless. USB-C wired mode included.',
+   charge:'USB-C fast charge. Full charge in 90 minutes. Optional wireless charging pad.',
+   specs:{Driver:'40mm Beryllium',Weight:'268 g',Impedance:'32 Ω',Frequency:'4Hz–40kHz',Codecs:'LDAC, aptX, AAC',Water:'IPX4',Warranty:'2 Years'},
+   box:['AUDIRA A1 Headphones','Premium hard-shell case','USB-C to USB-C cable','3.5mm audio cable','Airplane adapter','Quick-start guide'],
+   feats:[['Reference Tuning','Studio-neutral signature refined over 200 hours of testing.'],['Adaptive ANC','Senses your surroundings and adjusts noise cancellation live.'],['Multipoint','Connect two devices at once, switch seamlessly.']]},
+
+  {id:'a2', model:'A2', name:'AUDIRA A2', base:'white',
+   category:'Noise Cancelling', tagline:'Silence, perfected', tag:'Best Seller',
+   price:299, old:0, rating:4.8, reviews:3021,
+   colors:['white','black','grey'],
+   desc:'Built for focus. The deepest noise cancellation we\'ve ever engineered, wrapped in featherlight comfort.',
+   sound:'38mm bio-cellulose drivers tuned for immersive, fatigue-free listening across long sessions.',
+   anc:'Best-in-class −44dB ANC with three modes: Immersion, Aware, and Transparency.',
+   battery:'50 hours playback. Ultra-low-power standby holds a charge for weeks.',
+   bt:'Bluetooth 5.3 with multipoint and Snapdragon Sound. Wired USB-C DAC mode.',
+   charge:'USB-C. Full charge in 2 hours. 10-min quick charge = 5 hours.',
+   specs:{Driver:'38mm Bio-cellulose',Weight:'249 g',Impedance:'32 Ω',Frequency:'8Hz–28kHz',Codecs:'aptX Adaptive, AAC',Water:'IPX4',Warranty:'2 Years'},
+   box:['AUDIRA A2 Headphones','Travel case','USB-C cable','Flight adapter','Cleaning cloth','Quick-start guide'],
+   feats:[['Deepest ANC','−44dB active cancellation for total immersion.'],['Featherlight','249g of memory foam and protein leather comfort.'],['All-Day Battery','50 hours on a single charge.']]},
+
+  {id:'a3', model:'A3', name:'AUDIRA A3', base:'orange',
+   category:'Sport', tagline:'Move to the music', tag:'New',
+   price:199, old:229, rating:4.7, reviews:1387,
+   colors:['orange','black','green'],
+   desc:'Sweat-proof, secure, and punchy. Engineered for the gym, the trail, and everywhere your energy takes you.',
+   sound:'32mm drivers with an energetic, bass-forward tuning that keeps your momentum high.',
+   anc:'Sport-tuned ANC with a one-tap Aware mode so you can stay alert to traffic and surroundings.',
+   battery:'32 hours of playback. Quick 5-min charge gives 4 hours of workout time.',
+   bt:'Bluetooth 5.3 with a rock-solid low-latency gaming/sport mode.',
+   charge:'USB-C fast charge, full in 75 minutes.',
+   specs:{Driver:'32mm Dynamic',Weight:'242 g',Impedance:'28 Ω',Frequency:'12Hz–24kHz',Codecs:'aptX, AAC, SBC',Water:'IPX5',Warranty:'2 Years'},
+   box:['AUDIRA A3 Headphones','Sport carry pouch','USB-C cable','Extra ear cushions','Quick-start guide'],
+   feats:[['IPX5 Sweatproof','Rinse-safe and ready for any workout.'],['Secure Fit','Grippy cushions that stay put through every rep.'],['Aware Mode','One tap to hear the world around you.']]},
+
+  {id:'a4', model:'A4', name:'AUDIRA A4', base:'grey',
+   category:'Studio', tagline:'The producer\'s reference', tag:'Pro',
+   price:399, old:0, rating:5.0, reviews:964,
+   colors:['grey','black','white'],
+   desc:'A flat, uncoloured reference for creators. Hear every detail exactly as it was recorded — nothing added, nothing lost.',
+   sound:'Planar-magnetic 45mm drivers with ruler-flat response for mixing, mastering and critical listening.',
+   anc:'Passive isolation by design — no active processing to colour the signal. Pure monitoring.',
+   battery:'Wired-first with 60 hours wireless when you want to roam the studio.',
+   bt:'Bluetooth 5.4 LDAC plus a balanced 4.4mm and USB-C wired path for zero-latency monitoring.',
+   charge:'USB-C, full charge in 2 hours.',
+   specs:{Driver:'45mm Planar',Weight:'320 g',Impedance:'50 Ω',Frequency:'5Hz–48kHz',Codecs:'LDAC, Wired Hi-Res',Water:'—',Warranty:'2 Years'},
+   box:['AUDIRA A4 Headphones','Aluminium studio case','4.4mm balanced cable','USB-C cable','6.35mm adapter','Calibration card'],
+   feats:[['Planar Drivers','Ruler-flat response for true reference monitoring.'],['Hi-Res Wired','Balanced 4.4mm and USB-C for zero-latency work.'],['Studio Built','320g of aluminium and steel, made to last.']]},
+
+  {id:'a5', model:'A5', name:'AUDIRA A5', base:'blue',
+   category:'Wireless', tagline:'Everyday essential', tag:'Value',
+   price:249, old:279, rating:4.6, reviews:1809,
+   colors:['blue','black','white'],
+   desc:'Effortless wireless sound with warm, engaging tuning. The perfect companion for commutes, calls, and downtime.',
+   sound:'36mm dynamic drivers with a smooth, warm signature that makes any track a pleasure.',
+   anc:'Hybrid ANC with −38dB reduction and a natural Transparency mode for conversations.',
+   battery:'45 hours of playback with ANC engaged.',
+   bt:'Bluetooth 5.3 multipoint with crystal-clear 6-mic call clarity.',
+   charge:'USB-C, quick 10-min charge = 4.5 hours.',
+   specs:{Driver:'36mm Dynamic',Weight:'255 g',Impedance:'32 Ω',Frequency:'10Hz–26kHz',Codecs:'aptX, AAC',Water:'IPX4',Warranty:'2 Years'},
+   box:['AUDIRA A5 Headphones','Soft carry case','USB-C cable','3.5mm cable','Quick-start guide'],
+   feats:[['Warm Signature','Smooth, engaging tuning for every genre.'],['6-Mic Calls','Crystal-clear voice pickup on the move.'],['45h Battery','Days of listening between charges.']]},
+
+  {id:'a6', model:'A6', name:'AUDIRA A6', base:'green',
+   category:'Premium', tagline:'Refined minimalism', tag:'Editor\'s Pick',
+   price:129, old:169, rating:4.5, reviews:2456,
+   colors:['green','black','grey'],
+   desc:'Our most accessible AUDIRA. Clean design, balanced sound, and the signature refinement — at an inviting price.',
+   sound:'34mm drivers with a balanced, versatile tuning that punches well above its price.',
+   anc:'Entry ANC with −32dB reduction and Ambient mode for everyday awareness.',
+   battery:'38 hours of playback on a single charge.',
+   bt:'Bluetooth 5.3 with reliable, low-latency connection.',
+   charge:'USB-C, full charge in 90 minutes.',
+   specs:{Driver:'34mm Dynamic',Weight:'238 g',Impedance:'32 Ω',Frequency:'15Hz–22kHz',Codecs:'AAC, SBC',Water:'IPX4',Warranty:'2 Years'},
+   box:['AUDIRA A6 Headphones','Carry pouch','USB-C cable','Quick-start guide'],
+   feats:[['Balanced Sound','Versatile tuning that suits every genre.'],['Minimalist Design','Clean lines and a lightweight build.'],['Great Value','Signature AUDIRA quality, accessible price.']]}
+];
+const byId = id => PRODUCTS.find(p=>p.id===id);
+
+/* ---------- Reviews data ---------- */
+const REVIEWS = [
+  {n:'Elena Marsh',r:5,t:'The A2 completely changed my commute. The noise cancellation is unreal — I forget the train exists. Sound is warm but detailed.',p:'a2',v:true},
+  {n:'David Okafor',r:5,t:'As a producer I\'m picky. The A4 planars are flat, honest and revealing. My mixes translate perfectly now. Reference done right.',p:'a4',v:true},
+  {n:'Sofia Reyes',r:5,t:'Flagship A1 is worth every penny. Adaptive ANC is witchcraft and the soundstage feels enormous. Best headphones I\'ve owned.',p:'a1',v:true},
+  {n:'Marcus Lee',r:4,t:'A3 for the gym is fantastic — secure, sweatproof and punchy. Docked one star only because I wish the case was hard-shell.',p:'a3',v:true},
+  {n:'Priya Nair',r:5,t:'The A6 is astonishing for the price. Clean, comfortable and the battery just keeps going. Recommended to my whole family.',p:'a6',v:true},
+  {n:'Tom Braddock',r:5,t:'A5 nails the everyday. Calls are crisp, tuning is warm, and multipoint between my laptop and phone just works.',p:'a5',v:true},
+  {n:'Amara Diallo',r:5,t:'Build quality on the A1 feels genuinely luxurious. Aluminium and leather, weighted perfectly. It looks as good as it sounds.',p:'a1',v:true},
+  {n:'Jonas Weber',r:4,t:'A2 blocks out my open-plan office entirely. Focus mode for real. Comfortable for 8-hour days without any pressure.',p:'a2',v:true},
+  {n:'Chloe Bennett',r:5,t:'Bought the Sunset Orange A3 and the colour is gorgeous. Sound is energetic and it survives every sweaty spin class.',p:'a3',v:true}
+];
+
+/* ---------- Why choose ---------- */
+const WHY = [
+  ['wave','Premium Sound','Reference-tuned drivers reproduce every detail exactly as the artist intended.'],
+  ['ear','Advanced Noise Cancellation','Adaptive hybrid ANC that reads your environment and adjusts in real time.'],
+  ['battery','Long Battery Life','Up to 50 hours of playback so your music outlasts your day.'],
+  ['bolt','Fast Charging','A 5-minute charge delivers hours of listening. Never caught silent.'],
+  ['gem','Premium Materials','Aerospace aluminium, protein leather and memory foam, finished by hand.'],
+  ['shield','Comfortable Fit','Sculpted ergonomics and plush cushions for all-day, pressure-free wear.']
+];
+
+/* ---------- State (persisted) ---------- */
+const store = {
+  get(k,f){ try{const v=localStorage.getItem('audira_'+k);return v?JSON.parse(v):f}catch(e){return f} },
+  set(k,v){ try{localStorage.setItem('audira_'+k,JSON.stringify(v))}catch(e){} }
+};
+let cart = store.get('cart',[]);        // {id, color, qty}
+let wishlist = store.get('wishlist',[]); // [id]
+let user = store.get('user',null);       // {name,email}
+let lastOrder = null;
+
+/* ---------- Toast ---------- */
+function toast(title,sub,type='success'){
+  const el = document.createElement('div');
+  el.className = 'toast '+type;
+  const ic = type==='success'?IC.check:type==='danger'?IC.trash:IC.heart;
+  el.innerHTML = `<div class="tic">${ic}</div><div><b>${esc(title)}</b>${sub?`<span>${esc(sub)}</span>`:''}</div>`;
+  $('#toastWrap').appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),400)},2600);
+}
+
+/* ---------- Stars helper ---------- */
+function starsHTML(rating){
+  let s='';
+  for(let i=1;i<=5;i++){
+    s+=`<svg viewBox="0 0 24 24" class="${i<=Math.round(rating)?'':'empty'}"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17.8 6.1 20.3l1.3-6.2L2.7 9.5l6.3-.7z"/></svg>`;
+  }
+  return `<span class="stars">${s}</span>`;
+}
+/* ============================================================
+   Product Card
+   ============================================================ */
+function productCard(p){
+  const inWish = wishlist.includes(p.id);
+  const col = COLORS[p.base];
+  return `<article class="pcard" data-pid="${p.id}">
+    <div class="pcard-media">
+      <span class="pcard-tag">${esc(p.tag)}</span>
+      <button class="pcard-fav ${inWish?'active':''}" data-fav="${p.id}" aria-label="Add ${esc(p.name)} to wishlist" aria-pressed="${inWish}">${IC.heart}</button>
+      ${productMedia(p)}
+      <div class="pcard-quick">
+        <button class="btn" data-quick="${p.id}">${IC.eye} Quick View</button>
+        <button class="btn" data-view="${p.id}">Details</button>
+      </div>
+    </div>
+    <div class="pcard-body">
+      <div class="pcard-top">
+        <div>
+          <h3 class="pcard-name">${esc(p.name)}</h3>
+          <div class="pcard-color"><span class="color-dot" style="background:${col.hex}"></span>${esc(col.name)}</div>
+        </div>
+        <span class="pcard-cat">${esc(p.category)}</span>
+      </div>
+      <p class="pcard-desc">${esc(p.desc)}</p>
+      <div class="rating-row">${starsHTML(p.rating)}<span>${p.rating} · ${p.reviews.toLocaleString()}</span></div>
+      <div class="pcard-foot">
+        <div class="price">${money(p.price)}${p.old?`<small>${money(p.old)}</small>`:''}</div>
+        <button class="pcard-add" data-add="${p.id}" aria-label="Add ${esc(p.name)} to cart">${IC.plus}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function renderCards(container, list){
+  const el = $(container); if(!el) return;
+  el.innerHTML = list.map(productCard).join('');
+}
+
+/* ============================================================
+   Cart & Wishlist logic
+   ============================================================ */
+function cartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
+function cartSubtotal(){ return cart.reduce((s,i)=>s+byId(i.id).price*i.qty,0); }
+function syncBadges(){
+  const cc = cartCount(), wc = wishlist.length;
+  const cb=$('#cartBadge'), wb=$('#wishBadge');
+  cb.textContent=cc; cb.classList.toggle('show',cc>0);
+  wb.textContent=wc; wb.classList.toggle('show',wc>0);
+  $('#cartMini').textContent=cc; $('#wishMini').textContent=wc;
+}
+function addToCart(id,color,qty=1){
+  color = color || byId(id).base;
+  const found = cart.find(i=>i.id===id && i.color===color);
+  if(found) found.qty += qty; else cart.push({id,color,qty});
+  store.set('cart',cart); syncBadges();
+  const cb=$('#cartBadge'); cb.animate([{transform:'scale(1.5)'},{transform:'scale(1)'}],{duration:400,easing:'cubic-bezier(.22,1,.36,1)'});
+  toast('Added to cart', byId(id).name+' · '+COLORS[color].name);
+}
+function removeFromCart(idx){ cart.splice(idx,1); store.set('cart',cart); syncBadges(); renderCart(); }
+function setQty(idx,d){
+  cart[idx].qty=Math.max(1,cart[idx].qty+d);
+  store.set('cart',cart); syncBadges(); renderCart();
+}
+function toggleWish(id,btn){
+  const i = wishlist.indexOf(id);
+  if(i>-1){ wishlist.splice(i,1); toast('Removed from wishlist',byId(id).name,'info'); }
+  else { wishlist.push(id); toast('Saved to wishlist',byId(id).name); }
+  store.set('wishlist',wishlist); syncBadges();
+  $$('[data-fav="'+id+'"]').forEach(b=>{const a=wishlist.includes(id);b.classList.toggle('active',a);b.setAttribute('aria-pressed',a);});
+  if($('#view-wishlist').classList.contains('active')) renderWishlist();
+}
+
+/* ============================================================
+   Router / Navigation
+   ============================================================ */
+const VIEWS = ['home','shop','product','reviews','about','contact','wishlist','cart','account','checkout','success'];
+let currentView = 'home';
+function navigate(view, opts={}){
+  if(!VIEWS.includes(view)) view='home';
+  currentView = view;
+  $$('.view').forEach(v=>v.classList.remove('active'));
+  const el = $('#view-'+view); if(el) el.classList.add('active');
+  // per-view render
+  if(view==='shop'){ if(opts.cat) presetCategory(opts.cat); renderShop(); }
+  if(view==='product') renderProduct(opts.id);
+  if(view==='wishlist') renderWishlist();
+  if(view==='cart') renderCart();
+  if(view==='account') renderAccount();
+  if(view==='checkout') renderCheckout();
+  if(view==='reviews') renderReviews();
+  if(view==='success') renderSuccess();
+  if(view==='home') observeReveals();
+  // active nav link
+  $$('.drawer-link').forEach(l=>l.classList.toggle('active',l.dataset.nav===view));
+  closeDrawer();
+  window.scrollTo({top:0,behavior:opts.instant?'auto':'smooth'});
+  observeReveals();
+}
+
+/* ============================================================
+   Home
+   ============================================================ */
+function renderHome(){
+  $('#aboutHp').innerHTML = headphoneSVG('grey');
+  // marquee
+  const words=['Reference Sound','Adaptive ANC','40h Battery','Hi-Res Certified','Aerospace Aluminium','Lossless Audio','2-Year Warranty','Free Shipping'];
+  const set = words.map(w=>`<span class="marquee-item">${IC.check}${w}</span>`).join('');
+  $('#marqueeTrack').innerHTML = set+set;
+  // sections
+  renderCards('#newArrivals', [PRODUCTS[2],PRODUCTS[0],PRODUCTS[4]]);
+  renderCards('#bestSellers', [PRODUCTS[1],PRODUCTS[5],PRODUCTS[3]]);
+  $('#techGrid').innerHTML = WHY.map((w,i)=>`<div class="tech-card reveal ${'d'+(i%3)}"><div class="tech-ic">${IC[w[0]]}</div><h3>${w[1]}</h3><p>${w[2]}</p></div>`).join('');
+  $('#homeReviews').innerHTML = REVIEWS.slice(0,3).map(reviewCard).join('');
+  applyImages();
+}
+
+/* ============================================================
+   Cinematic imagery — loaded from stable HTTPS CDNs with an
+   elegant gradient fallback so nothing ever renders broken.
+   ============================================================ */
+const IMAGES = {
+  hero:      'https://images.pexels.com/photos/8102702/pexels-photo-8102702.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  immersive: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1600',
+  brand:     'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?auto=format&fit=crop&w=1600&q=80'
+};
+function applyImages(){
+  document.querySelectorAll('[data-img]').forEach(el=>{
+    const src = IMAGES[el.dataset.img];
+    if(!src || el.dataset.done) return;
+    el.dataset.done='1';
+    const img = new Image();
+    img.onload = ()=>{ el.style.backgroundImage = `url("${src}")`; el.classList.add('img-in'); };
+    img.onerror = ()=>{ /* keep gradient fallback */ };
+    img.src = src;
+  });
+}
+
+/* ============================================================
+   Reviews
+   ============================================================ */
+function reviewCard(rv){
+  const p = byId(rv.p); const col = COLORS[p.base];
+  const initials = rv.n.split(' ').map(x=>x[0]).join('').slice(0,2);
+  return `<div class="review-card reveal">
+    <div class="review-head">
+      <div class="avatar">${initials}</div>
+      <div><b>${esc(rv.n)}</b>${rv.v?`<span class="verified">${IC.check}Verified Buyer</span>`:''}</div>
+    </div>
+    ${starsHTML(rv.r)}
+    <p>"${esc(rv.t)}"</p>
+    <div class="review-prod"><span class="color-dot" style="background:${col.hex}"></span>${esc(p.name)} — ${esc(col.name)}</div>
+  </div>`;
+}
+function renderReviews(){
+  const avg = (REVIEWS.reduce((s,r)=>s+r.r,0)/REVIEWS.length).toFixed(1);
+  const dist=[5,4,3,2,1].map(st=>({st,n:REVIEWS.filter(r=>r.r===st).length}));
+  $('#reviewsSummary').innerHTML = `
+    <div class="rating-big">
+      <div class="num">${avg}</div>
+      ${starsHTML(avg)}
+      <small>${REVIEWS.length} reviews · 98% recommend</small>
+    </div>
+    <div class="rating-bars">
+      ${dist.map(d=>`<div class="rating-bar"><span class="lab">${d.st}★</span><div class="track"><div class="fill" data-w="${Math.round(d.n/REVIEWS.length*100)}"></div></div><span class="pct">${Math.round(d.n/REVIEWS.length*100)}%</span></div>`).join('')}
+    </div>`;
+  $('#allReviews').innerHTML = REVIEWS.map(reviewCard).join('');
+  setTimeout(()=>$$('#reviewsSummary .fill').forEach(f=>f.style.width=f.dataset.w+'%'),150);
+}
+/* ============================================================
+   Shop + Filters
+   ============================================================ */
+const CATS = ['Wireless','Noise Cancelling','Studio','Sport','Premium'];
+const COLOR_KEYS = Object.keys(COLORS);
+let shopState = {search:'',cats:new Set(),colors:new Set(),maxPrice:399,sort:'featured'};
+function presetCategory(cat){ shopState.cats=new Set([cat]); }
+function buildFilters(){
+  $('#catFilters').innerHTML = CATS.map(c=>`<button class="chip" data-catf="${esc(c)}">${esc(c)}</button>`).join('');
+  $('#colorFilters').innerHTML = COLOR_KEYS.map(k=>`<button class="swatch" data-colf="${k}" title="${COLORS[k].name}" style="background:${COLORS[k].hex}" aria-label="Filter ${COLORS[k].name}"></button>`).join('');
+}
+function syncFilterUI(){
+  $$('[data-catf]').forEach(b=>b.classList.toggle('active',shopState.cats.has(b.dataset.catf)));
+  $$('[data-colf]').forEach(b=>b.classList.toggle('active',shopState.colors.has(b.dataset.colf)));
+  $('#priceSlider').value=shopState.maxPrice; $('#priceMax').textContent='$'+shopState.maxPrice;
+  $('#shopSearch').value=shopState.search; $('#sortSelect').value=shopState.sort;
+}
+function renderShop(){
+  syncFilterUI();
+  let list = PRODUCTS.filter(p=>{
+    if(shopState.search){const q=shopState.search.toLowerCase();
+      if(!(p.name+' '+p.category+' '+p.desc+' '+COLORS[p.base].name).toLowerCase().includes(q)) return false;}
+    if(shopState.cats.size && !shopState.cats.has(p.category)) return false;
+    if(shopState.colors.size && !p.colors.some(c=>shopState.colors.has(c))) return false;
+    if(p.price>shopState.maxPrice) return false;
+    return true;
+  });
+  const s=shopState.sort;
+  if(s==='price-low') list.sort((a,b)=>a.price-b.price);
+  else if(s==='price-high') list.sort((a,b)=>b.price-a.price);
+  else if(s==='rating') list.sort((a,b)=>b.rating-a.rating);
+  else if(s==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
+  $('#resultCount').textContent = list.length+' product'+(list.length!==1?'s':'');
+  const grid=$('#shopGrid');
+  if(!list.length){
+    grid.innerHTML = `<div class="no-results" style="grid-column:1/-1">${IC.eye}<h3>No headphones found</h3><p>Try adjusting your filters or search.</p><button class="btn btn-ghost" id="resetShop" style="margin-top:16px">Clear filters</button></div>`;
+    $('#resetShop').onclick=clearFilters;
+  } else grid.innerHTML = list.map(productCard).join('');
+  observeReveals();
+}
+function clearFilters(){
+  shopState={search:'',cats:new Set(),colors:new Set(),maxPrice:399,sort:'featured'};
+  renderShop();
+}
+
+/* ============================================================
+   Product Detail
+   ============================================================ */
+let pdpState = {id:null,color:null,qty:1};
+function renderProduct(id){
+  const p = byId(id) || PRODUCTS[0];
+  pdpState = {id:p.id, color:p.colors[0], qty:1};
+  $('#pdpCrumb').textContent = p.name;
+  const relatedIds = PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
+  const el = $('#pdpContent');
+  el.innerHTML = `
+  <div class="pdp">
+    <div class="pdp-gallery">
+      <div class="pdp-stage" id="pdpStage">${productMedia(p,p.colors[0])}</div>
+      <div class="pdp-thumbs" id="pdpThumbs">
+        ${p.colors.map((c,i)=>`<button class="pdp-thumb ${i===0?'active':''}" data-thumb="${c}" aria-label="View ${COLORS[c].name}">${productMedia(p,c)}</button>`).join('')}
+      </div>
+    </div>
+    <div class="pdp-info">
+      <span class="mono-eyebrow pdp-cat">${esc(p.category)} · ${esc(p.tagline)}</span>
+      <h1>${esc(p.name)}</h1>
+      <div class="rating-row">${starsHTML(p.rating)}<span>${p.rating} · ${p.reviews.toLocaleString()} reviews</span></div>
+      <div class="pdp-price">${money(p.price)}${p.old?`<small style="font-size:1.1rem;color:var(--text-3);text-decoration:line-through;margin-left:10px">${money(p.old)}</small>`:''}</div>
+      <p class="pdp-desc">${esc(p.desc)}</p>
+      <div class="pdp-block">
+        <div class="pdp-label">Colour — <span class="picked" id="pickedColor">${esc(COLORS[p.colors[0]].name)}</span></div>
+        <div class="color-picker" id="colorPicker">
+          ${p.colors.map((c,i)=>`<button class="color-opt ${i===0?'active':''}" data-color="${c}" aria-label="Select ${COLORS[c].name}"><span class="dot" style="background:${COLORS[c].hex}"></span><span>${COLORS[c].name.split(' ')[0]}</span></button>`).join('')}
+        </div>
+      </div>
+      <div class="pdp-block">
+        <div class="pdp-label">Quantity</div>
+        <div class="qty-row">
+          <div class="qty-stepper"><button data-q="-1" aria-label="Decrease">−</button><span id="pdpQty">1</span><button data-q="1" aria-label="Increase">+</button></div>
+        </div>
+      </div>
+      <div class="pdp-actions">
+        <button class="btn btn-primary btn-lg" id="pdpAdd">${IC.cart} Add to Cart</button>
+        <button class="btn btn-solid btn-lg" id="pdpBuy">Buy Now</button>
+        <button class="btn btn-ghost" id="pdpWish" aria-label="Toggle wishlist" style="flex:0 0 auto;width:54px;padding:0">${IC.heart}</button>
+      </div>
+      <div class="pdp-perks">
+        <div class="pdp-perk">${IC.ship}<div><b>Free Shipping</b><span>2–4 day delivery</span></div></div>
+        <div class="pdp-perk">${IC.shield}<div><b>2-Year Warranty</b><span>Full coverage</span></div></div>
+        <div class="pdp-perk">${IC.bolt}<div><b>30-Day Returns</b><span>No questions asked</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdp-tabs">
+    <div class="tab-nav" id="tabNav">
+      <button class="tab-btn active" data-tab="specs">Specifications</button>
+      <button class="tab-btn" data-tab="feats">Sound & Features</button>
+      <button class="tab-btn" data-tab="box">What's in the Box</button>
+      <button class="tab-btn" data-tab="ship">Shipping & Returns</button>
+      <button class="tab-btn" data-tab="revs">Reviews</button>
+    </div>
+    <div class="tab-panel active" data-panel="specs">
+      <dl class="spec-grid">
+        <div class="spec-item"><dt>Noise Cancellation</dt><dd>${esc(p.anc.split('.')[0])}</dd></div>
+        <div class="spec-item"><dt>Battery Life</dt><dd>${esc(p.battery.split('.')[0])}</dd></div>
+        <div class="spec-item"><dt>Connectivity</dt><dd>${esc(p.bt.split('.')[0])}</dd></div>
+        <div class="spec-item"><dt>Charging</dt><dd>${esc(p.charge.split('.')[0])}</dd></div>
+        ${Object.entries(p.specs).map(([k,v])=>`<div class="spec-item"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}
+      </dl>
+    </div>
+    <div class="tab-panel" data-panel="feats">
+      <ul class="feat-list" style="margin-bottom:26px">
+        <li>${IC.wave}<div><b>Sound</b> — ${esc(p.sound)}</div></li>
+        <li>${IC.ear}<div><b>Noise Cancellation</b> — ${esc(p.anc)}</div></li>
+        <li>${IC.battery}<div><b>Battery</b> — ${esc(p.battery)}</div></li>
+        <li>${IC.bt}<div><b>Connectivity</b> — ${esc(p.bt)}</div></li>
+        <li>${IC.bolt}<div><b>Charging</b> — ${esc(p.charge)}</div></li>
+      </ul>
+      <div class="why-grid">${p.feats.map(f=>`<div class="why-card"><div class="why-icon">${IC.gem}</div><h3 style="font-size:1.1rem">${esc(f[0])}</h3><p>${esc(f[1])}</p></div>`).join('')}</div>
+    </div>
+    <div class="tab-panel" data-panel="box">
+      <ul class="box-list">${p.box.map(b=>`<li>${IC.check}<span>${esc(b)}</span></li>`).join('')}</ul>
+    </div>
+    <div class="tab-panel" data-panel="ship">
+      <ul class="feat-list">
+        <li>${IC.ship}<div><b>Free Standard Shipping</b> — Complimentary 2–4 business day delivery on every order, worldwide.</div></li>
+        <li>${IC.bolt}<div><b>Express Available</b> — Next-day delivery at checkout for orders placed before 2pm.</div></li>
+        <li>${IC.shield}<div><b>30-Day Returns</b> — Not in love? Return within 30 days for a full refund, no questions asked.</div></li>
+        <li>${IC.gem}<div><b>2-Year Warranty</b> — Every AUDIRA is covered against defects for two full years.</div></li>
+      </ul>
+    </div>
+    <div class="tab-panel" data-panel="revs">
+      <div class="reviews-grid">${REVIEWS.filter(r=>r.p===p.id).concat(REVIEWS.filter(r=>r.p!==p.id).slice(0,2)).slice(0,4).map(reviewCard).join('')}</div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-head"><span class="mono-eyebrow">Complete the Set</span><h2 class="section-title" style="font-size:2rem">You May Also Like</h2></div>
+    <div class="grid-products">${relatedIds.map(productCard).join('')}</div>
+  </section>`;
+
+  // wire pdp
+  const stage=$('#pdpStage');
+  function pickColor(c){
+    pdpState.color=c;
+    stage.classList.add('swapping');
+    setTimeout(()=>{ stage.innerHTML=productMedia(p,c); stage.classList.remove('swapping'); },220);
+    $('#pickedColor').textContent=COLORS[c].name;
+    $$('#colorPicker .color-opt').forEach(o=>o.classList.toggle('active',o.dataset.color===c));
+    $$('#pdpThumbs .pdp-thumb').forEach(t=>t.classList.toggle('active',t.dataset.thumb===c));
+  }
+  $$('#colorPicker .color-opt').forEach(o=>o.onclick=()=>pickColor(o.dataset.color));
+  $$('#pdpThumbs .pdp-thumb').forEach(t=>t.onclick=()=>pickColor(t.dataset.thumb));
+  $$('#tabNav .tab-btn').forEach(b=>b.onclick=()=>{
+    $$('#tabNav .tab-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    $$('.tab-panel').forEach(pn=>pn.classList.toggle('active',pn.dataset.panel===b.dataset.tab));
+  });
+  $$('[data-q]').forEach(b=>b.onclick=()=>{pdpState.qty=Math.max(1,pdpState.qty+ +b.dataset.q);$('#pdpQty').textContent=pdpState.qty;});
+  $('#pdpAdd').onclick=()=>addToCart(p.id,pdpState.color,pdpState.qty);
+  $('#pdpBuy').onclick=()=>{addToCart(p.id,pdpState.color,pdpState.qty);navigate('checkout');};
+  const wb=$('#pdpWish'); const setWB=()=>wb.classList.toggle('active',wishlist.includes(p.id)); setWB();
+  wb.onclick=()=>{toggleWish(p.id);setWB();};
+  observeReveals();
+}
+
+/* ============================================================
+   Quick View Modal
+   ============================================================ */
+function openQuick(id){
+  const p=byId(id); let color=p.colors[0];
+  const m=$('#quickModalInner');
+  const render=()=>{ m.innerHTML=`
+    <div class="modal-inner">
+      <div class="modal-media">
+        <button class="modal-close" id="qmClose" aria-label="Close">${'<svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M6 6l12 12M18 6L6 18\' stroke-linecap=\'round\'/></svg>'}</button>
+        <div id="qmImg">${productMedia(p,color)}</div>
+      </div>
+      <div class="modal-body">
+        <span class="mono-eyebrow" style="color:var(--accent-2)">${esc(p.category)}</span>
+        <h2>${esc(p.name)}</h2>
+        <div class="rating-row">${starsHTML(p.rating)}<span>${p.rating} · ${p.reviews.toLocaleString()}</span></div>
+        <div class="pdp-price" style="font-size:1.6rem;margin:14px 0">${money(p.price)}</div>
+        <p style="color:var(--text-2);margin-bottom:18px">${esc(p.desc)}</p>
+        <div class="pdp-label">Colour — <span class="picked" id="qmColorName">${esc(COLORS[color].name)}</span></div>
+        <div class="color-picker" id="qmColors" style="margin:10px 0 22px">
+          ${p.colors.map((c,i)=>`<button class="color-opt ${i===0?'active':''}" data-c="${c}"><span class="dot" style="background:${COLORS[c].hex}"></span></button>`).join('')}
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="qmAdd" style="flex:1">${IC.cart} Add to Cart</button>
+          <button class="btn btn-ghost" id="qmView">View Details</button>
+        </div>
+      </div>
+    </div>`;
+    $('#qmClose').onclick=closeQuick;
+    $$('#qmColors .color-opt').forEach(o=>o.onclick=()=>{color=o.dataset.c;$('#qmImg').innerHTML=productMedia(p,color);$('#qmColorName').textContent=COLORS[color].name;$$('#qmColors .color-opt').forEach(x=>x.classList.toggle('active',x.dataset.c===color));});
+    $('#qmAdd').onclick=()=>{addToCart(p.id,color);closeQuick();};
+    $('#qmView').onclick=()=>{closeQuick();navigate('product',{id:p.id});};
+  };
+  render();
+  $('#quickModal').classList.add('open'); document.body.classList.add('no-scroll');
+}
+function closeQuick(){ $('#quickModal').classList.remove('open'); document.body.classList.remove('no-scroll'); }
+/* ============================================================
+   Cart view
+   ============================================================ */
+function renderCart(){
+  const el=$('#cartContent');
+  if(!cart.length){
+    el.innerHTML = emptyState('cart','Your cart is empty','Discover the AUDIRA collection and find the sound that moves you.','Continue Shopping','shop');
+    wireEmpty(el); return;
+  }
+  const sub=cartSubtotal(); const ship=sub>250?0:12; const tax=sub*0.08; const total=sub+ship+tax;
+  el.innerHTML=`<div class="cart-layout">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <span style="color:var(--text-3)">${cartCount()} item${cartCount()!==1?'s':''}</span>
+        <button class="link-accent" id="continueShop" style="background:none">${IC.arrow.replace('M5 12h14M13 6l6 6-6 6','M19 12H5M11 6l-6 6 6 6')} Continue shopping</button>
+      </div>
+      ${cart.map((it,i)=>{const p=byId(it.id);const col=COLORS[it.color];return `
+      <div class="cart-item">
+        <div class="cart-item-img">${headphoneSVG(it.color)}</div>
+        <div class="cart-item-info">
+          <h4>${esc(p.name)}</h4>
+          <div class="meta"><span class="color-dot" style="background:${col.hex}"></span>${esc(col.name)} · ${esc(p.category)}</div>
+          <div class="cart-item-controls">
+            <div class="qty-stepper"><button data-cq="${i}:-1" aria-label="Decrease">−</button><span>${it.qty}</span><button data-cq="${i}:1" aria-label="Increase">+</button></div>
+          </div>
+        </div>
+        <div class="cart-item-end">
+          <button class="cart-remove" data-rm="${i}" aria-label="Remove ${esc(p.name)}">${IC.trash}</button>
+          <div class="cart-item-price">${money(p.price*it.qty)}</div>
+        </div>
+      </div>`;}).join('')}
+    </div>
+    <div class="summary">
+      <h3>Order Summary</h3>
+      <div class="promo"><input type="text" placeholder="Promo code" aria-label="Promo code"><button class="btn btn-ghost" id="applyPromo" style="padding:.7em 1.2em">Apply</button></div>
+      <div class="summary-row"><span>Subtotal</span><span>${money(sub)}</span></div>
+      <div class="summary-row"><span>Shipping</span><span>${ship===0?'Free':money(ship)}</span></div>
+      <div class="summary-row"><span>Tax (est.)</span><span>${money(tax)}</span></div>
+      <div class="summary-row total"><span>Total</span><span>${money(total)}</span></div>
+      <button class="btn btn-primary btn-block btn-lg" id="goCheckout" style="margin-top:18px">Checkout ${IC.arrow}</button>
+      ${ship===0?'<p style="text-align:center;color:var(--accent-2);font-size:.82rem;margin-top:12px">✓ You qualified for free shipping</p>':`<p style="text-align:center;color:var(--text-3);font-size:.82rem;margin-top:12px">Add ${money(250-sub)} for free shipping</p>`}
+    </div>
+  </div>`;
+  $$('[data-cq]').forEach(b=>b.onclick=()=>{const[i,d]=b.dataset.cq.split(':');setQty(+i,+d);});
+  $$('[data-rm]').forEach(b=>b.onclick=()=>removeFromCart(+b.dataset.rm));
+  $('#goCheckout').onclick=()=>navigate('checkout');
+  $('#continueShop').onclick=()=>navigate('shop');
+  $('#applyPromo').onclick=()=>toast('Invalid code','That promo code isn\'t valid','danger');
+}
+
+/* ============================================================
+   Wishlist view
+   ============================================================ */
+function renderWishlist(){
+  const el=$('#wishlistContent');
+  if(!wishlist.length){
+    el.innerHTML=emptyState('heart','Your wishlist is empty','Tap the heart on any product to save it here for later.','Browse Collection','shop');
+    wireEmpty(el); return;
+  }
+  el.innerHTML=`<div class="grid-products">${wishlist.map(id=>productCard(byId(id))).join('')}</div>`;
+  observeReveals();
+}
+
+/* ============================================================
+   Empty state helper
+   ============================================================ */
+function emptyState(icon,title,text,btn,nav){
+  const ic = icon==='cart'?IC.cart:IC.heart;
+  return `<div class="empty-state"><div class="ico">${ic}</div><h3>${title}</h3><p>${text}</p><button class="btn btn-primary btn-lg" data-empty-nav="${nav}">${btn}</button></div>`;
+}
+function wireEmpty(el){ const b=$('[data-empty-nav]',el); if(b) b.onclick=()=>navigate(b.dataset.emptyNav); }
+
+/* ============================================================
+   Account: auth + dashboard
+   ============================================================ */
+let authMode='login';
+function renderAccount(){
+  const el=$('#accountContent');
+  if(user){ renderDashboard(el); return; }
+  el.innerHTML=`
+  <div class="auth-wrap">
+    <div style="text-align:center;margin-bottom:24px">
+      <h1 style="font-size:1.8rem" id="authTitle">Welcome back</h1>
+      <p style="color:var(--text-3);font-size:.92rem;margin-top:6px" id="authSub">Sign in to your AUDIRA account</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab ${authMode==='login'?'active':''}" data-auth="login">Sign In</button>
+      <button class="auth-tab ${authMode==='signup'?'active':''}" data-auth="signup">Sign Up</button>
+    </div>
+    <form id="authForm" novalidate>
+      <div class="field" id="nameField" style="display:${authMode==='signup'?'block':'none'}">
+        <label>Full Name</label><div class="field-input"><input type="text" id="afName" placeholder="Alex Morgan" autocomplete="name"></div>
+        <span class="err">Please enter your name</span>
+      </div>
+      <div class="field">
+        <label>Email</label><div class="field-input"><input type="email" id="afEmail" placeholder="you@email.com" autocomplete="email"></div>
+        <span class="err">Enter a valid email address</span>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="field-input">
+          <input type="password" id="afPass" placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password">${eyeIcon(false)}</button>
+        </div>
+        <span class="err">Password must be at least 6 characters</span>
+      </div>
+      <div class="form-row">
+        <label class="checkbox"><input type="checkbox" id="afRemember" checked>Remember me</label>
+        <a class="link-accent" href="#" id="forgotLink">Forgot password?</a>
+      </div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit" id="authSubmit">${authMode==='login'?'Sign In':'Create Account'}</button>
+      <div class="auth-divider"><span>Demo mode — no real account needed</span></div>
+      <button type="button" class="btn btn-ghost btn-block" id="demoFill">Fill demo credentials</button>
+    </form>
+  </div>`;
+  wireAuth();
+}
+function eyeIcon(shown){
+  return shown
+   ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18" stroke-linecap="round"/></svg>'
+   : IC.eye;
+}
+function switchAuth(mode){ authMode=mode; renderAccount(); }
+function wireAuth(){
+  $$('[data-auth]').forEach(b=>b.onclick=()=>switchAuth(b.dataset.auth));
+  const pass=$('#afPass'), tog=$('#pwToggle'); let shown=false;
+  tog.onclick=()=>{shown=!shown;pass.type=shown?'text':'password';tog.innerHTML=eyeIcon(shown);tog.setAttribute('aria-label',shown?'Hide password':'Show password');};
+  $('#forgotLink').onclick=e=>{e.preventDefault();toast('Reset link sent','Check your inbox (demo)','info');};
+  $('#demoFill').onclick=()=>{ if($('#nameField').style.display!=='none')$('#afName').value='Alex Morgan'; $('#afEmail').value='alex@audira.audio'; $('#afPass').value='audira123'; };
+  $('#authForm').onsubmit=e=>{
+    e.preventDefault();
+    let ok=true;
+    const setErr=(id,bad)=>{const f=$('#'+id).closest('.field');f.classList.toggle('show-err',bad);$('#'+id).classList.toggle('invalid',bad);if(bad)ok=false;};
+    if(authMode==='signup') setErr('afName',!$('#afName').value.trim());
+    setErr('afEmail',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('#afEmail').value));
+    setErr('afPass',$('#afPass').value.length<6);
+    if(!ok) return;
+    const email=$('#afEmail').value.trim();
+    const name=authMode==='signup'?$('#afName').value.trim():email.split('@')[0].replace(/^\w/,c=>c.toUpperCase());
+    user={name,email};
+    if($('#afRemember').checked) store.set('user',user);
+    toast(authMode==='login'?'Welcome back!':'Account created', name,'success');
+    renderAccount();
+  };
+}
+function renderDashboard(el){
+  const orders=demoOrders();
+  el.innerHTML=`
+  <div style="margin-bottom:34px"><span class="mono-eyebrow">My Account</span><h1 style="font-size:2.2rem;margin-top:10px">Hi, ${esc(user.name.split(' ')[0])} 👋</h1></div>
+  <div class="dash">
+    <aside class="dash-side">
+      <div class="dash-profile">
+        <div class="avatar">${esc(user.name.split(' ').map(x=>x[0]).join('').slice(0,2))}</div>
+        <b>${esc(user.name)}</b><span>${esc(user.email)}</span>
+      </div>
+      <nav class="dash-menu" id="dashMenu">
+        <button class="active" data-dash="overview">${IC.gem}Overview</button>
+        <button data-dash="orders">${IC.ship}Orders</button>
+        <button data-dash="wish">${IC.heart}Wishlist</button>
+        <button data-dash="cart">${IC.cart}Cart</button>
+        <button class="logout" id="logoutBtn">${IC.arrow}Logout</button>
+      </nav>
+    </aside>
+    <div class="dash-panel" id="dashPanel"></div>
+  </div>`;
+  const panel=$('#dashPanel');
+  const panels={
+    overview:()=>`
+      <div class="dash-cards">
+        <div class="dash-stat"><div class="ic">${IC.ship}</div><b>${orders.length}</b><span>Total Orders</span></div>
+        <div class="dash-stat"><div class="ic">${IC.heart}</div><b>${wishlist.length}</b><span>Wishlist Items</span></div>
+        <div class="dash-stat"><div class="ic">${IC.cart}</div><b>${cartCount()}</b><span>In Cart</span></div>
+      </div>
+      <h3 style="margin:10px 0 16px">Recent Orders</h3>
+      ${orders.slice(0,2).map(orderRow).join('')}`,
+    orders:()=>`<h3 style="margin-bottom:16px">Order History</h3>${orders.map(orderRow).join('')}`,
+    wish:()=> wishlist.length?`<h3 style="margin-bottom:16px">Saved Items</h3><div class="grid-products">${wishlist.map(id=>productCard(byId(id))).join('')}</div>`:`<div class="empty-state" style="padding:40px 0"><div class="ico">${IC.heart}</div><h3>No saved items</h3><p>Save products you love to find them here.</p><button class="btn btn-primary" data-empty-nav="shop">Browse</button></div>`,
+    cart:()=> cart.length?`<h3 style="margin-bottom:16px">Your Cart (${cartCount()})</h3>${cart.map((it)=>{const p=byId(it.id);return `<div class="order-row"><div class="oimg">${headphoneSVG(it.color)}</div><div class="oinfo"><b>${esc(p.name)}</b><span>${esc(COLORS[it.color].name)} · Qty ${it.qty}</span></div><div class="cart-item-price">${money(p.price*it.qty)}</div></div>`;}).join('')}<button class="btn btn-primary" style="margin-top:16px" data-empty-nav="cart">Go to Cart</button>`:`<div class="empty-state" style="padding:40px 0"><div class="ico">${IC.cart}</div><h3>Cart is empty</h3><button class="btn btn-primary" data-empty-nav="shop">Shop now</button></div>`
+  };
+  const show=k=>{panel.innerHTML=panels[k]();$$('[data-empty-nav]',panel).forEach(b=>b.onclick=()=>navigate(b.dataset.emptyNav));$$('[data-view]',panel).forEach(b=>b.onclick=()=>navigate('product',{id:b.dataset.view}));$$('[data-add]',panel).forEach(b=>b.onclick=()=>addToCart(b.dataset.add));$$('[data-fav]',panel).forEach(b=>b.onclick=()=>toggleWish(b.dataset.fav,b));$$('[data-quick]',panel).forEach(b=>b.onclick=()=>openQuick(b.dataset.quick));};
+  show('overview');
+  $$('#dashMenu [data-dash]').forEach(b=>b.onclick=()=>{$$('#dashMenu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');show(b.dataset.dash);});
+  $('#logoutBtn').onclick=()=>{user=null;store.set('user',null);localStorage.removeItem('audira_user');toast('Logged out','See you soon','info');renderAccount();};
+}
+function orderRow(o){
+  return `<div class="order-row"><div class="oimg">${headphoneSVG(o.color)}</div><div class="oinfo"><b>${esc(o.name)}</b><span>Order ${o.id} · ${o.date}</span></div><span class="pill ${o.statusClass}">${o.status}</span><div class="cart-item-price">${money(o.total)}</div></div>`;
+}
+function demoOrders(){
+  return [
+    {id:'#AD-4821',name:'AUDIRA A1 — Midnight Black',color:'black',date:'Aug 2, 2026',status:'Delivered',statusClass:'delivered',total:349},
+    {id:'#AD-4655',name:'AUDIRA A4 — Titanium Grey',color:'grey',date:'Jul 18, 2026',status:'In Transit',statusClass:'transit',total:399},
+    {id:'#AD-4390',name:'AUDIRA A3 — Sunset Orange',color:'orange',date:'Jun 29, 2026',status:'Delivered',statusClass:'delivered',total:199}
+  ];
+}
+/* ============================================================
+   Checkout
+   ============================================================ */
+let payMethod='card';
+function renderCheckout(){
+  const el=$('#checkoutContent');
+  if(!cart.length){ el.innerHTML=emptyState('cart','Nothing to check out','Add a headphone to your cart first.','Browse Collection','shop'); wireEmpty(el); return; }
+  const sub=cartSubtotal(); const ship=sub>250?0:12; const tax=sub*0.08; const total=sub+ship+tax;
+  payMethod='card';
+  el.innerHTML=`<div class="checkout-layout">
+    <div>
+      <div class="checkout-section">
+        <h3><span class="step-num">1</span> Contact & Shipping</h3>
+        <div class="grid-2">
+          <div class="field"><label>Full Name</label><div class="field-input"><input type="text" id="coName" placeholder="Alex Morgan" value="${user?esc(user.name):''}"></div><span class="err">Required</span></div>
+          <div class="field"><label>Email</label><div class="field-input"><input type="email" id="coEmail" placeholder="you@email.com" value="${user?esc(user.email):''}"></div><span class="err">Valid email required</span></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Phone</label><div class="field-input"><input type="tel" id="coPhone" placeholder="+1 555 000 0000"></div><span class="err">Required</span></div>
+          <div class="field"><label>City</label><div class="field-input"><input type="text" id="coCity" placeholder="San Francisco"></div><span class="err">Required</span></div>
+        </div>
+        <div class="field"><label>Shipping Address</label><div class="field-input"><input type="text" id="coAddr" placeholder="140 Audio Lane, Apt 5"></div><span class="err">Required</span></div>
+      </div>
+
+      <div class="checkout-section">
+        <h3><span class="step-num">2</span> Payment Method</h3>
+        <div class="pay-methods" id="payMethods">
+          <div class="pay-method active" data-pay="card">${IC.gem}<div><b>Card</b><span>Visa, Mastercard</span></div><span class="pay-radio"></span></div>
+          <div class="pay-method" data-pay="cod">${IC.ship}<div><b>Cash on Delivery</b><span>Pay when it arrives</span></div><span class="pay-radio"></span></div>
+        </div>
+        <div id="payCard">
+          <div class="card-preview">
+            <div class="cp-top"><div class="chip"></div><div class="brand">AUDIRA</div></div>
+            <div class="cp-num" id="cpNum">•••• •••• •••• ••••</div>
+            <div class="cp-bottom"><div><small>Card Holder</small><span id="cpName">YOUR NAME</span></div><div><small>Expires</small><span id="cpExp">MM/YY</span></div></div>
+          </div>
+          <div class="field"><label>Cardholder Name</label><div class="field-input"><input type="text" id="ccName" placeholder="Alex Morgan"></div><span class="err">Required</span></div>
+          <div class="field"><label>Card Number</label><div class="field-input"><input type="text" id="ccNum" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242"></div><span class="err">Enter 16 digits</span></div>
+          <div class="grid-2">
+            <div class="field"><label>Expiry</label><div class="field-input"><input type="text" id="ccExp" maxlength="5" placeholder="MM/YY"></div><span class="err">MM/YY</span></div>
+            <div class="field"><label>CVV</label><div class="field-input"><input type="text" id="ccCvv" inputmode="numeric" maxlength="4" placeholder="123"></div><span class="err">3–4 digits</span></div>
+          </div>
+          <p style="color:var(--text-3);font-size:.78rem;display:flex;align-items:center;gap:8px">${IC.shield} Demo only — no real payment is processed and no card data is stored.</p>
+        </div>
+        <div id="payCod" style="display:none">
+          <p style="color:var(--text-2)">Pay in cash when your AUDIRA arrives. Our courier will collect the total at your door. Please have the exact amount ready.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h3>Your Order</h3>
+      <div style="margin-bottom:16px">
+        ${cart.map(it=>{const p=byId(it.id);return `<div class="order-mini"><div class="omimg">${headphoneSVG(it.color)}<span class="qb">${it.qty}</span></div><div class="ominfo"><b>${esc(p.name)}</b><span>${esc(COLORS[it.color].name)}</span></div><div class="omprice">${money(p.price*it.qty)}</div></div>`;}).join('')}
+      </div>
+      <div class="summary-row"><span>Subtotal</span><span>${money(sub)}</span></div>
+      <div class="summary-row"><span>Shipping</span><span>${ship===0?'Free':money(ship)}</span></div>
+      <div class="summary-row"><span>Tax</span><span>${money(tax)}</span></div>
+      <div class="summary-row total"><span>Total</span><span>${money(total)}</span></div>
+      <button class="btn btn-primary btn-block btn-lg" id="placeOrder" style="margin-top:18px">Place Order · ${money(total)}</button>
+      <button class="btn btn-ghost btn-block" id="backToCart" style="margin-top:10px">Back to Cart</button>
+    </div>
+  </div>`;
+
+  // pay method toggle
+  $$('#payMethods .pay-method').forEach(m=>m.onclick=()=>{
+    payMethod=m.dataset.pay;
+    $$('#payMethods .pay-method').forEach(x=>x.classList.toggle('active',x===m));
+    $('#payCard').style.display=payMethod==='card'?'block':'none';
+    $('#payCod').style.display=payMethod==='cod'?'block':'none';
+  });
+  // card live preview + formatting
+  const ccNum=$('#ccNum'),ccName=$('#ccName'),ccExp=$('#ccExp'),ccCvv=$('#ccCvv');
+  ccNum.oninput=()=>{
+    let v=ccNum.value.replace(/\D/g,'').slice(0,16);
+    ccNum.value=v.replace(/(.{4})/g,'$1 ').trim();
+    let masked=(v+'••••••••••••••••'.slice(v.length)).replace(/(.{4})/g,'$1 ').trim();
+    $('#cpNum').textContent=masked;
+  };
+  ccName.oninput=()=>$('#cpName').textContent=ccName.value.toUpperCase()||'YOUR NAME';
+  ccExp.oninput=()=>{let v=ccExp.value.replace(/\D/g,'').slice(0,4);if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);ccExp.value=v;$('#cpExp').textContent=v||'MM/YY';};
+  ccCvv.oninput=()=>ccCvv.value=ccCvv.value.replace(/\D/g,'').slice(0,4);
+  $('#backToCart').onclick=()=>navigate('cart');
+  $('#placeOrder').onclick=()=>placeOrder(total);
+}
+function placeOrder(total){
+  let ok=true;
+  const setErr=(id,bad)=>{const f=$('#'+id).closest('.field');if(!f)return;f.classList.toggle('show-err',bad);$('#'+id).classList.toggle('invalid',bad);if(bad)ok=false;};
+  setErr('coName',!$('#coName').value.trim());
+  setErr('coEmail',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('#coEmail').value));
+  setErr('coPhone',$('#coPhone').value.replace(/\D/g,'').length<7);
+  setErr('coCity',!$('#coCity').value.trim());
+  setErr('coAddr',!$('#coAddr').value.trim());
+  if(payMethod==='card'){
+    setErr('ccName',!$('#ccName').value.trim());
+    setErr('ccNum',$('#ccNum').value.replace(/\D/g,'').length<16);
+    setErr('ccExp',!/^\d{2}\/\d{2}$/.test($('#ccExp').value));
+    setErr('ccCvv',$('#ccCvv').value.length<3);
+  }
+  if(!ok){ toast('Check your details','Some fields need attention','danger'); const bad=$('.field.show-err'); if(bad)bad.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  lastOrder={id:'#AD-'+Math.floor(1000+Math.random()*9000),total,items:[...cart],method:payMethod,email:$('#coEmail').value,name:$('#coName').value};
+  cart=[]; store.set('cart',cart); syncBadges();
+  navigate('success');
+}
+
+/* ============================================================
+   Order success
+   ============================================================ */
+function renderSuccess(){
+  const el=$('#successContent');
+  const o=lastOrder;
+  if(!o){ el.innerHTML=emptyState('cart','No recent order','','Continue Shopping','shop'); wireEmpty(el); return; }
+  el.innerHTML=`<div class="success-wrap">
+    <div class="success-check">${IC.check}</div>
+    <h1>Order Confirmed</h1>
+    <p>Thank you, ${esc(o.name.split(' ')[0])}. Your AUDIRA is on its way.</p>
+    <p style="color:var(--text-3);font-size:.9rem">A confirmation has been sent to ${esc(o.email)}</p>
+    <div class="order-id">${o.id}</div>
+    <div style="max-width:420px;margin:20px auto;text-align:left">
+      ${o.items.map(it=>{const p=byId(it.id);return `<div class="order-mini"><div class="omimg">${headphoneSVG(it.color)}<span class="qb">${it.qty}</span></div><div class="ominfo"><b>${esc(p.name)}</b><span>${esc(COLORS[it.color].name)}</span></div><div class="omprice">${money(p.price*it.qty)}</div></div>`;}).join('')}
+      <div class="summary-row total" style="border-color:var(--border)"><span>Total ${o.method==='cod'?'(Cash on Delivery)':'Paid'}</span><span>${money(o.total)}</span></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+      <button class="btn btn-primary btn-lg" data-nav="shop">Continue Shopping</button>
+      <button class="btn btn-ghost btn-lg" data-nav="account">View Orders</button>
+    </div>
+    <p style="color:var(--text-3);font-size:.82rem;margin-top:24px">Estimated delivery: 2–4 business days · Free tracked shipping</p>
+  </div>`;
+}
+/* ============================================================
+   Drawer
+   ============================================================ */
+function openDrawer(){ $('#drawer').classList.add('open');$('#navOverlay').classList.add('open');$('#burger').classList.add('open');$('#burger').setAttribute('aria-expanded','true');$('#drawer').setAttribute('aria-hidden','false');document.body.classList.add('no-scroll'); }
+function closeDrawer(){ $('#drawer').classList.remove('open');$('#navOverlay').classList.remove('open');$('#burger').classList.remove('open');$('#burger').setAttribute('aria-expanded','false');$('#drawer').setAttribute('aria-hidden','true');document.body.classList.remove('no-scroll'); }
+
+/* ============================================================
+   Theme
+   ============================================================ */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  store.set('theme',t);
+  $('#themeIcon').innerHTML = t==='dark'
+    ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke-linejoin="round"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4" stroke-linecap="round"/>';
+}
+function toggleTheme(){ applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); }
+
+/* ============================================================
+   Scroll reveal
+   ============================================================ */
+let revealObserver;
+function observeReveals(){
+  if(!revealObserver){
+    revealObserver=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObserver.unobserve(e.target);} });
+    },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  }
+  $$('.reveal:not(.in)').forEach(el=>revealObserver.observe(el));
+}
+
+/* ============================================================
+   Global event delegation
+   ============================================================ */
+function wireGlobal(){
+  document.addEventListener('click',e=>{
+    const nav=e.target.closest('[data-nav]');
+    if(nav){ e.preventDefault(); const cat=nav.dataset.cat; navigate(nav.dataset.nav, cat?{cat}:{}); return; }
+    const info=e.target.closest('[data-info]');
+    if(info){ e.preventDefault(); showInfo(info.dataset.info); return; }
+    const add=e.target.closest('[data-add]'); if(add){ addToCart(add.dataset.add); return; }
+    const fav=e.target.closest('[data-fav]'); if(fav){ toggleWish(fav.dataset.fav,fav); return; }
+    const quick=e.target.closest('[data-quick]'); if(quick){ openQuick(quick.dataset.quick); return; }
+    const view=e.target.closest('[data-view]'); if(view){ navigate('product',{id:view.dataset.view}); return; }
+    const card=e.target.closest('.pcard'); // click card media area -> details
+    if(card && e.target.closest('.pcard-media') && !e.target.closest('button')){ navigate('product',{id:card.dataset.pid}); return; }
+  });
+  // header buttons
+  $('#burger').onclick=()=>$('#drawer').classList.contains('open')?closeDrawer():openDrawer();
+  $('#drawerClose').onclick=closeDrawer;
+  $('#navOverlay').onclick=closeDrawer;
+  $('#themeToggle').onclick=toggleTheme;
+  // shop filters
+  document.addEventListener('click',e=>{
+    const cf=e.target.closest('[data-catf]');
+    if(cf){ const c=cf.dataset.catf; shopState.cats.has(c)?shopState.cats.delete(c):shopState.cats.add(c); renderShop(); }
+    const cl=e.target.closest('[data-colf]');
+    if(cl){ const c=cl.dataset.colf; shopState.colors.has(c)?shopState.colors.delete(c):shopState.colors.add(c); renderShop(); }
+  });
+  $('#shopSearch').addEventListener('input',e=>{shopState.search=e.target.value;renderShop();});
+  $('#sortSelect').addEventListener('change',e=>{shopState.sort=e.target.value;renderShop();});
+  $('#priceSlider').addEventListener('input',e=>{shopState.maxPrice=+e.target.value;$('#priceMax').textContent='$'+e.target.value;renderShop();});
+  $('#clearFilters').onclick=clearFilters;
+  $('#filterToggle').onclick=()=>$('#filtersPanel').classList.toggle('open');
+  // forms
+  $('#newsletterForm').onsubmit=e=>{e.preventDefault();e.target.reset();toast('Subscribed!','Welcome to AUDIRA — 10% off incoming');};
+  $('#contactForm').onsubmit=e=>{e.preventDefault();e.target.reset();toast('Message sent','We\'ll reply within 1 business day');};
+  // esc key
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeDrawer(); closeQuick(); $('#filtersPanel').classList.remove('open'); } });
+  // header scroll
+  const onScroll=()=>$('#header').classList.toggle('scrolled',window.scrollY>20);
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+}
+
+/* ============================================================
+   Info modal (footer links) — reuse toast/quick pattern
+   ============================================================ */
+const INFO={
+  shipping:['Shipping','Free tracked shipping on all orders, delivered in 2–4 business days. Express next-day delivery available at checkout for orders before 2pm PST. We ship to 38 countries worldwide.'],
+  returns:['Returns','Not in love? Return any AUDIRA within 30 days for a full refund — no questions asked. Items must be in original condition. Return shipping is on us.'],
+  warranty:['Warranty','Every AUDIRA is covered by a 2-year limited warranty against manufacturing defects, plus lifetime customer support from our audio specialists.'],
+  privacy:['Privacy Policy','AUDIRA respects your privacy. This is a demo site — no personal data is collected, stored, or transmitted. All interactions stay in your browser.'],
+  terms:['Terms of Service','This is a demonstration storefront. No real transactions occur, no payments are processed, and no products will be shipped. For showcase purposes only.']
+};
+function showInfo(key){
+  const [title,body]=INFO[key]||['Info',''];
+  const m=$('#quickModalInner');
+  m.innerHTML=`<div style="padding:38px;max-width:560px"><button class="modal-close" id="qmClose" aria-label="Close">${IC.trash.replace('M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13','M6 6l12 12M18 6L6 18')}</button><span class="mono-eyebrow" style="color:var(--accent-2)">AUDIRA</span><h2 style="margin:10px 0 14px">${title}</h2><p style="color:var(--text-2)">${body}</p></div>`;
+  $('#qmClose').onclick=closeQuick;
+  $('#quickModal').classList.add('open');document.body.classList.add('no-scroll');
+}
+
+/* ============================================================
+   Init
+   ============================================================ */
+function init(){
+  applyTheme(store.get('theme','dark'));
+  buildFilters();
+  renderHome();
+  syncBadges();
+  wireGlobal();
+  observeReveals();
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
